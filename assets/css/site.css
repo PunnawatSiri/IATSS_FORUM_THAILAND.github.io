@@ -1,0 +1,62 @@
+
+        /* Glassmorphism Navigation & Cards */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .dark .glass-nav {
+            background: rgba(10, 10, 12, 0.85);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        .dark .glass-card {
+            background: rgba(22, 22, 24, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .apple-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+        }
+        .apple-shadow-lg {
+            box-shadow: 0 20px 45px -15px rgba(0, 69, 54, 0.18);
+        }
+
+        /* Anti-Save and Image Protection */
+        .protected-img {
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            pointer-events: none;
+        }
+
+        /* Focus state outline styling */
+        *:focus-visible {
+            outline: 2px solid #006954;
+            outline-offset: 2px;
+        }
+
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 105, 84, 0.25);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 105, 84, 0.5);
+        }
+    

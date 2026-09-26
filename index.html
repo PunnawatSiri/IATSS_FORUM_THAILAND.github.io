@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IATSS Forum Thailand | Leadership & Sustainability</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        iatss: { DEFAULT: "#006954", dark: "#004d3d", light: "#e6f0ed", hover: "#005443" },
+                        apple: { bg: "#ffffff", darkbg: "#0a0a0c", subtle: "#f5f5f7", darksubtle: "#161618", text: "#1d1d1f", darktext: "#f5f5f7", secondary: "#86868b", darksecondary: "#a1a1a6", border: "#e5e5e7", darkborder: "#2c2c2e" }
+                    },
+                    fontFamily: { sans: ["-apple-system", "BlinkMacSystemFont", "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", "sans-serif"] }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="assets/css/site.css">
+    <!-- ALUMNI NODE DETAIL MODAL -->
+    <div id="detailModal" class="fixed inset-0 bg-black/30 dark:bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 z-[60]">
+        <div class="glass-card rounded-3xl p-6 max-w-sm w-full apple-shadow-lg relative">
+            <button onclick="closeAlumniModal()" class="absolute top-4 right-4 text-apple-secondary dark:text-apple-darksecondary hover:text-iatss text-lg font-bold" aria-label="Close alumni details">×</button>
+            <div class="flex flex-col items-center text-center">
+                <img id="modalImg" src="" alt="Alumni avatar" class="w-20 h-20 rounded-full bg-apple-subtle dark:bg-apple-darksubtle border-2 border-iatss mb-3 p-1">
+                <span id="modalRow" class="text-[10px] font-bold uppercase tracking-wider text-iatss bg-iatss-light dark:bg-iatss/20 px-2.5 py-1 rounded-full border border-iatss/20 mb-2">Row #</span>
+                <h2 id="modalName" class="text-lg font-bold text-apple-text dark:text-apple-darktext">Name</h2>
+                <p id="modalNickname" class="text-xs text-apple-secondary dark:text-apple-darksecondary mb-4">Nickname</p>
+                <div class="w-full bg-apple-subtle dark:bg-apple-darksubtle rounded-2xl p-4 border border-apple-border/60 dark:border-apple-darkborder/60 text-left text-xs space-y-3">
+                    <div><span class="text-[10px] text-apple-secondary dark:text-apple-darksecondary font-medium block">Batch Number</span><span id="modalBatch" class="font-semibold text-iatss">Batch -</span></div>
+                    <div><span class="text-[10px] text-apple-secondary dark:text-apple-darksecondary font-medium block">Current Work Position</span><span id="modalPosition" class="font-semibold text-apple-text dark:text-apple-darktext">Position</span></div>
+                    <div><span class="text-[10px] text-apple-secondary dark:text-apple-darksecondary font-medium block">Place of Work</span><span id="modalPlace" class="font-semibold text-apple-text dark:text-apple-darktext">Place</span></div>
+                </div>
+                <button onclick="closeAlumniModal()" class="mt-4 w-full bg-iatss hover:bg-iatss-hover text-white text-xs font-bold py-2.5 rounded-full transition">Close</button>
+            </div>
+        </div>
+    </div>
+    <style>
+        /* Glassmorphism Navigation & Cards */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .dark .glass-nav {
+            background: rgba(10, 10, 12, 0.85);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        .dark .glass-card {
+            background: rgba(22, 22, 24, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .apple-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+        }
+        .apple-shadow-lg {
+            box-shadow: 0 20px 45px -15px rgba(0, 69, 54, 0.18);
+        }
+
+        /* Anti-Save and Image Protection */
+        .protected-img {
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            pointer-events: none;
+        }
+
+        /* Focus state outline styling */
+        *:focus-visible {
+            outline: 2px solid #006954;
+            outline-offset: 2px;
+        }
+
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 105, 84, 0.25);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 105, 84, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-apple-bg dark:bg-apple-darkbg text-apple-text dark:text-apple-darktext font-sans antialiased selection:bg-iatss selection:text-white flex flex-col min-h-screen transition-colors duration-300">
+
+    <!-- Header / Top Navigation -->
+    <header class="sticky top-0 z-50 glass-nav border-b border-apple-border/60 dark:border-apple-darkborder/60 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logos Section: IATSS Forum & IATSS Forum Thailand -->
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <!-- Global IATSS Forum Logo -->
+                    <a href="https://www.iatssforum.jp/en/" target="_blank" rel="noopener noreferrer" class="group flex items-center space-x-2">
+                        <div class="w-10 h-10 rounded-xl bg-iatss text-white flex items-center justify-center font-bold text-lg shadow-sm group-hover:scale-105 transition-transform duration-300">
+                            <svg class="w-6 h-6 fill-current text-white" viewBox="0 0 24 24">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <div class="hidden sm:block text-left">
+                            <span class="block text-[10px] font-semibold uppercase tracking-wider text-apple-secondary dark:text-apple-darksecondary">Main</span>
+                            <span class="block text-xs font-bold text-apple-text dark:text-apple-darktext tracking-tight group-hover:text-iatss transition-colors">IATSS Forum</span>
+                        </div>
+                    </a>
+
+                    <div class="h-7 w-px bg-apple-border dark:bg-apple-darkborder"></div>
+
+                    <!-- IATSS Forum Thailand Logo -->
+                    <a href="#" class="group flex items-center space-x-2">
+                        <div class="w-10 h-10 rounded-xl bg-iatss-light dark:bg-iatss/20 border border-iatss/20 text-iatss flex items-center justify-center font-extrabold text-base shadow-sm group-hover:scale-105 transition-transform duration-300">
+                            <span class="text-xs font-black tracking-tighter">TH</span>
+                        </div>
+                        <div class="text-left">
+                            <span class="block text-[10px] font-semibold uppercase tracking-wider text-iatss">Alumni Association</span>
+                            <span class="block text-xs font-bold text-apple-text dark:text-apple-darktext tracking-tight group-hover:text-iatss transition-colors">IATSS Thailand</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Navigation Tabs (Desktop) -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-1.5 bg-apple-subtle dark:bg-apple-darksubtle p-1.5 rounded-full border border-apple-border/50 dark:border-apple-darkborder/50">
+                    <button onclick="switchTab('about')" id="nav-about" class="tab-btn active-tab px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 text-apple-text dark:text-apple-darktext bg-white dark:bg-slate-800 shadow-sm">About</button>
+                    <button onclick="switchTab('project')" id="nav-project" class="tab-btn px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext">Project</button>
+                    <button onclick="switchTab('people')" id="nav-people" class="tab-btn px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext">People</button>
+                    <button onclick="switchTab('alumni')" id="nav-alumni" class="tab-btn px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext">Alumni</button>
+                    <button onclick="switchTab('faq')" id="nav-faq" class="tab-btn px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext">FAQ</button>
+                    <button onclick="switchTab('contact')" id="nav-contact" class="tab-btn px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext">Contact</button>
+                </nav>
+
+                <!-- Right Action Bar: Dark Theme Toggle & Mobile Menu Button -->
+                <div class="flex items-center space-x-3">
+                    <!-- Dark Theme Button -->
+                    <button id="theme-toggle" onclick="toggleTheme()" class="p-2.5 rounded-full bg-apple-subtle dark:bg-apple-darksubtle border border-apple-border/60 dark:border-apple-darkborder/60 text-apple-text dark:text-apple-darktext hover:scale-105 active:scale-95 transition-all duration-200" aria-label="Toggle Dark Mode">
+                        <svg id="theme-toggle-sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        <svg id="theme-toggle-moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2 rounded-xl text-apple-text dark:text-apple-darktext hover:bg-apple-subtle dark:hover:bg-apple-darksubtle transition-colors" aria-label="Toggle Navigation Menu">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Mobile Navigation Drawer -->
+            <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-apple-border dark:border-apple-darkborder space-y-2">
+                <button onclick="switchTab('about')" class="block w-full text-left px-4 py-2.5 text-base font-medium rounded-xl hover:bg-apple-subtle dark:hover:bg-apple-darksubtle text-apple-text dark:text-apple-darktext">About</button>
+                <button onclick="switchTab('project')" class="block w-full text-left px-4 py-2.5 text-base font-medium rounded-xl hover:bg-apple-subtle dark:hover:bg-apple-darksubtle text-apple-secondary dark:text-apple-darksecondary">Project</button>
+                <button onclick="switchTab('people')" class="block w-full text-left px-4 py-2.5 text-base font-medium rounded-xl hover:bg-apple-subtle dark:hover:bg-apple-darksubtle text-apple-secondary dark:text-apple-darksecondary">People</button>
+                <button onclick="switchTab('alumni')" class="block w-full text-left px-4 py-2.5 text-base font-medium rounded-xl hover:bg-apple-subtle dark:hover:bg-apple-darksubtle text-apple-secondary dark:text-apple-darksecondary">Alumni</button>
+                <button onclick="switchTab('faq')" class="block w-full text-left px-4 py-2.5 text-base font-medium rounded-xl hover:bg-apple-subtle dark:hover:bg-apple-darksubtle text-apple-secondary dark:text-apple-darksecondary">FAQ</button>
+                <button onclick="switchTab('contact')" class="block w-full text-left px-4 py-2.5 text-base font-medium rounded-xl hover:bg-apple-subtle dark:hover:bg-apple-darksubtle text-apple-secondary dark:text-apple-darksecondary">Contact</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow">
+        
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-20">
+            
+            <!-- ABOUT TAB (HERO & BENTO GRID VIEW) -->
+            <div id="tab-content-about" class="tab-panel transition-opacity duration-500 opacity-100">
+                <div class="text-center max-w-4xl mx-auto space-y-8">
+                    
+                    <!-- Pill Tagline -->
+                    <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-iatss-light dark:bg-iatss/20 text-iatss text-xs sm:text-sm font-semibold tracking-wide border border-iatss/20">
+                        <span class="w-2 h-2 rounded-full bg-iatss animate-pulse"></span>
+                        <span>International Association of Traffic and Safety Sciences</span>
+                    </div>
+
+                    <!-- Bold Main Headline -->
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-apple-text dark:text-apple-darktext leading-[1.08]">
+                        Empowering Future Leaders for <br class="hidden sm:inline"/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-iatss via-emerald-600 to-teal-500">
+                            Sustainable Impact.
+                        </span>
+                    </h1>
+
+                    <!-- Sub Headline with Core Value Statements -->
+                    <p class="text-lg sm:text-xl lg:text-2xl text-apple-secondary dark:text-apple-darksecondary font-normal max-w-3xl mx-auto leading-relaxed">
+                        Connecting passionate Thai professionals to <strong class="text-apple-text dark:text-apple-darktext font-bold">Extend network</strong> across ASEAN, dedicated to <strong class="text-apple-text dark:text-apple-darktext font-bold">Thinking and Learning Together</strong> for <strong class="text-apple-text dark:text-apple-darktext font-bold">Mobility Sustainability Leadership</strong>.
+                    </p>
+
+                    <!-- Vertically Stacked CTA Buttons -->
+                    <div class="flex flex-col items-center justify-center gap-3.5 max-w-md mx-auto pt-2">
+                        <!-- Primary CTA Button (Top) -->
+                        <a href="https://www.iatssforum.jp/en/" target="_blank" rel="noopener noreferrer" 
+                           class="w-full sm:w-auto min-w-[280px] px-8 py-4 rounded-full bg-iatss hover:bg-iatss-hover text-white text-base font-semibold transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 text-center flex items-center justify-center space-x-2">
+                            <span>About the forum</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                        </a>
+
+                        <!-- Secondary CTA Button (Bottom) -->
+                        <a href="https://www.dcce.go.th/tag/iatss-forum/" target="_blank" rel="noopener noreferrer" 
+                           class="w-full sm:w-auto min-w-[280px] px-8 py-3.5 rounded-full bg-apple-subtle dark:bg-apple-darksubtle hover:bg-iatss-light dark:hover:bg-iatss/20 text-apple-text dark:text-apple-darktext hover:text-iatss dark:hover:text-iatss text-sm font-medium transition-all duration-300 border border-apple-border dark:border-apple-darkborder hover:border-iatss/30 text-center flex items-center justify-center space-x-2">
+                            <span>สมัครโครงการฯผ่านฝ่ายเลขาธิการในประเทศ</span>
+                            <svg class="w-4 h-4 text-iatss" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Stats Section -->
+                <div class="mt-16 pt-12 border-t border-apple-border/60 dark:border-apple-darkborder/60">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                        
+                        <div class="glass-card p-6 rounded-3xl text-center apple-shadow hover:scale-102 transition-transform duration-300">
+                            <div class="text-4xl sm:text-5xl font-extrabold text-iatss tracking-tight">
+                                <span id="counter-alumni">0</span>+
+                            </div>
+                            <div class="text-sm font-semibold text-apple-text dark:text-apple-darktext mt-2">Thai Alumni Network</div>
+                            <div class="text-xs text-apple-secondary dark:text-apple-darksecondary mt-1">Leading change in Thailand</div>
+                        </div>
+
+                        <div class="glass-card p-6 rounded-3xl text-center apple-shadow hover:scale-102 transition-transform duration-300">
+                            <div class="text-4xl sm:text-5xl font-extrabold text-iatss tracking-tight">
+                                <span id="counter-professions">0</span>+
+                            </div>
+                            <div class="text-sm font-semibold text-apple-text dark:text-apple-darktext mt-2">Alumni Professions</div>
+                            <div class="text-xs text-apple-secondary dark:text-apple-darksecondary mt-1">Cross-sector expertise</div>
+                        </div>
+
+                        <div class="glass-card p-6 rounded-3xl text-center apple-shadow hover:scale-102 transition-transform duration-300">
+                            <div class="text-4xl sm:text-5xl font-extrabold text-iatss tracking-tight">
+                                <span id="counter-years">0</span>+
+                            </div>
+                            <div class="text-sm font-semibold text-apple-text dark:text-apple-darktext mt-2">Years of Excellence</div>
+                            <div class="text-xs text-apple-secondary dark:text-apple-darksecondary mt-1">Fostering ASEAN-India-Japan ties</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Bento Grid Gallery Section -->
+                <div class="mt-20 pt-10 border-t border-apple-border/60 dark:border-apple-darkborder/60 space-y-8">
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 max-w-5xl mx-auto">
+                        <div class="text-center sm:text-left">
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-apple-text dark:text-apple-darktext tracking-tight">Memorable Moments</h2>
+                            <p class="text-sm text-apple-secondary dark:text-apple-darksecondary mt-1">Highlights from our global forum program and alumni activities.</p>
+                        </div>
+
+                        <!-- Toggle Switcher: Main Program vs Alumni Activities -->
+                        <div class="inline-flex p-1 rounded-full bg-apple-subtle dark:bg-apple-darksubtle border border-apple-border dark:border-apple-darkborder">
+                            <button id="btn-bento-program" onclick="setBentoCategory('program')" class="px-5 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 bg-iatss text-white shadow-sm">Main Program</button>
+                            <button id="btn-bento-alumni" onclick="setBentoCategory('alumni')" class="px-5 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext">Alumni Activities</button>
+                        </div>
+                    </div>
+
+                    <!-- Responsive Bento Grid Container -->
+                    <div id="bento-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto auto-rows-[220px]">
+                        <!-- Dynamically filled with anti-save images -->
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- PROJECT TAB -->
+            <div id="tab-content-project" class="tab-panel hidden transition-opacity duration-500 opacity-0">
+                <div class="max-w-7xl mx-auto space-y-8">
+                    
+                    <div class="text-center space-y-2">
+                        <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-iatss-light dark:bg-iatss/20 text-iatss text-xs font-semibold">
+                            <span>Sustainable Development Goals (SDGs)</span>
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-apple-text dark:text-apple-darktext tracking-tight">Projects &amp; Field Implementations</h2>
+                        <p class="text-sm sm:text-base text-apple-secondary dark:text-apple-darksecondary max-w-2xl mx-auto">
+                            Browse completed Thai alumni initiatives categorized by SDG pillars (Economy, Society, Biosphere) in chronological order. Click any project to highlight its location on the Thailand map.
+                        </p>
+                    </div>
+
+                    <!-- Split Panel Layout: Left Projects List | Right Interactive Thailand Map -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                        
+                        <!-- LEFT PANEL: Chronological Project Node List -->
+                        <div class="lg:col-span-7 space-y-5">
+                            
+                            <!-- Category Filter Pills -->
+                            <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between gap-2 overflow-x-auto border border-apple-border dark:border-apple-darkborder">
+                                <span class="text-xs font-bold text-apple-secondary dark:text-apple-darksecondary pl-2 uppercase tracking-wider shrink-0">Filter by SDG:</span>
+                                <div class="flex items-center gap-1.5 shrink-0">
+                                    <button onclick="filterProjects('all')" id="sghs-filter-all" class="sghs-btn active-sghs px-3.5 py-1.5 text-xs font-bold rounded-full bg-iatss text-white shadow-sm transition-all duration-200">All</button>
+                                    <button onclick="filterProjects('Economy')" id="sghs-filter-Economy" class="sghs-btn px-3.5 py-1.5 text-xs font-semibold rounded-full text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-all duration-200">Economy</button>
+                                    <button onclick="filterProjects('Society')" id="sghs-filter-Society" class="sghs-btn px-3.5 py-1.5 text-xs font-semibold rounded-full text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-all duration-200">Society</button>
+                                    <button onclick="filterProjects('Biosphere')" id="sghs-filter-Biosphere" class="sghs-btn px-3.5 py-1.5 text-xs font-semibold rounded-full text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-all duration-200">Biosphere</button>
+                                </div>
+                            </div>
+
+                            <!-- Projects Card Scrollable Container -->
+                            <div id="projects-list-container" class="space-y-4 max-h-[640px] overflow-y-auto pr-1">
+                                <!-- Cards rendered dynamically in chronological order via JS -->
+                            </div>
+
+                        </div>
+
+                        <!-- RIGHT PANEL: Interactive Thailand Map with Blinking Spot -->
+                        <div class="lg:col-span-5 sticky top-28">
+                            <div class="glass-card rounded-3xl p-6 border border-apple-border dark:border-apple-darkborder apple-shadow relative overflow-hidden flex flex-col items-center">
+                                
+                                <div class="w-full flex items-center justify-between mb-3">
+                                    <span class="text-xs font-bold uppercase tracking-wider text-iatss flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-iatss animate-ping"></span>
+                                        Thailand Project Map
+                                    </span>
+                                    <span id="active-map-location-name" class="text-xs font-semibold text-apple-secondary dark:text-apple-darksecondary">Select a project</span>
+                                </div>
+
+                                <!-- Thailand SVG Map Box -->
+                                <div class="relative w-full max-w-[340px] h-[480px] bg-apple-subtle/60 dark:bg-apple-darksubtle/60 rounded-2xl p-4 flex items-center justify-center border border-apple-border/40 dark:border-apple-darkborder/40">
+                                    
+                                    <!-- Stylized Thailand Vector Map -->
+                                    <svg viewBox="0 0 300 500" class="w-full h-full drop-shadow-md text-slate-300 dark:text-slate-800" fill="currentColor">
+                                        <!-- Northern Region -->
+                                        <path d="M110 30 L160 20 L190 60 L180 120 L130 140 L90 100 Z" class="fill-current opacity-70 hover:opacity-90 transition-opacity" />
+                                        <!-- Northeastern Region (Isan) -->
+                                        <path d="M180 120 L270 110 L280 200 L210 240 L160 190 Z" class="fill-current opacity-60 hover:opacity-90 transition-opacity" />
+                                        <!-- Central Region -->
+                                        <path d="M130 140 L180 120 L160 190 L180 250 L120 250 L110 180 Z" class="fill-current opacity-80 hover:opacity-90 transition-opacity" />
+                                        <!-- Eastern Region -->
+                                        <path d="M180 250 L230 240 L240 280 L180 290 Z" class="fill-current opacity-70 hover:opacity-90 transition-opacity" />
+                                        <!-- Southern Region -->
+                                        <path d="M120 250 L160 250 L150 330 L130 390 L140 460 L100 480 L90 410 L110 330 Z" class="fill-current opacity-75 hover:opacity-90 transition-opacity" />
+                                    </svg>
+
+                                    <!-- Dynamic Map Pins Layer -->
+                                    <div id="map-pins-layer" class="absolute inset-0 pointer-events-none">
+                                        <!-- Interactive pin dots rendered dynamically -->
+                                    </div>
+
+                                </div>
+
+                                <!-- Location Callout Banner below map -->
+                                <div id="map-info-box" class="w-full mt-4 p-4 rounded-2xl bg-white dark:bg-slate-800 border border-iatss/30 shadow-md text-left transition-all duration-300">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[10px] uppercase font-bold text-iatss tracking-wider">Active Location Spot</span>
+                                        <span id="map-info-year" class="text-[10px] font-bold px-2 py-0.5 rounded bg-iatss-light dark:bg-iatss/20 text-iatss">2024</span>
+                                    </div>
+                                    <h4 id="map-info-title" class="text-sm font-extrabold text-apple-text dark:text-apple-darktext mt-1">Click a project on the left</h4>
+                                    <p id="map-info-desc" class="text-xs text-apple-secondary dark:text-apple-darksecondary mt-1 leading-snug">The map marker will blink at the exact project site in Thailand.</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- PEOPLE TAB -->
+            <div id="tab-content-people" class="tab-panel hidden transition-opacity duration-500 opacity-0">
+                <div class="max-w-6xl mx-auto space-y-10">
+                    <div class="text-center space-y-2">
+                        <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-iatss-light dark:bg-iatss/20 text-iatss text-xs font-semibold">
+                            <span>Organizational Hierarchy</span>
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-apple-text dark:text-apple-darktext tracking-tight">Thailand Steering Committee</h2>
+                        <p class="text-sm sm:text-base text-apple-secondary dark:text-apple-darksecondary max-w-2xl mx-auto">
+                            Guiding the vision, candidate selection, and strategic leadership of the IATSS Forum network across Thailand.
+                        </p>
+                    </div>
+
+                    <!-- Hierarchy Tree Container -->
+                    <div class="relative py-4">
+                        
+                        <!-- LEVEL 1: PRESIDENT (Top) -->
+                        <div class="flex justify-center relative">
+                            <div class="glass-card rounded-3xl p-6 w-full max-w-sm text-center border-2 border-iatss/40 shadow-lg hover:shadow-xl transition-all duration-300 relative z-10 group">
+                                <div class="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden border-2 border-iatss shadow-md">
+                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="President Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                </div>
+                                <div class="inline-block px-3 py-0.5 rounded-full bg-iatss text-white text-[11px] font-bold uppercase tracking-wider mb-2">
+                                    President
+                                </div>
+                                <h3 class="text-xl font-extrabold text-apple-text dark:text-apple-darktext">Dr. Somchai Techawong</h3>
+                                <p class="text-xs text-iatss font-semibold mb-3">Chairperson, Thailand Steering Committee</p>
+                                
+                                <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-xs font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss dark:hover:text-iatss transition-colors gap-1.5 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-3.5 py-1.5 rounded-full border border-apple-border/70 dark:border-apple-darkborder/70">
+                                    <span>Workplace Details</span>
+                                    <svg class="w-3.5 h-3.5 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                
+                                <div class="details-content hidden mt-3 pt-3 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-xs space-y-1">
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Director-General &amp; Senior Strategic Advisor</p>
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext mt-1.5">Workplace:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Department of Climate Change and Environment (DCCE)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Connector Lines Level 1 -> Level 2 (Desktop) -->
+                        <div class="hidden md:flex flex-col items-center my-2">
+                            <div class="w-0.5 h-8 bg-iatss/40"></div>
+                            <div class="w-[66%] h-0.5 bg-iatss/40"></div>
+                        </div>
+
+                        <!-- LEVEL 2: THREE VICE PRESIDENTS (Middle) -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 md:pt-0 relative">
+                            <!-- Desktop vertical stems -->
+                            <div class="hidden md:block absolute -top-0 left-[16.66%] w-0.5 h-6 bg-iatss/40"></div>
+                            <div class="hidden md:block absolute -top-0 left-[50%] w-0.5 h-6 bg-iatss/40"></div>
+                            <div class="hidden md:block absolute -top-0 left-[83.33%] w-0.5 h-6 bg-iatss/40"></div>
+
+                            <!-- VP 1 -->
+                            <div class="glass-card rounded-2xl p-5 text-center border border-apple-border dark:border-apple-darkborder shadow-sm hover:shadow-md transition-all duration-300 relative group">
+                                <div class="relative w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-iatss/60">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Vice President Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                </div>
+                                <div class="inline-block px-2.5 py-0.5 rounded-full bg-iatss-light dark:bg-iatss/20 text-iatss text-[10px] font-bold uppercase tracking-wider mb-2">
+                                    Vice President
+                                </div>
+                                <h3 class="text-base font-bold text-apple-text dark:text-apple-darktext">Prof. Dr. Chutima Suwan</h3>
+                                <p class="text-xs text-apple-secondary dark:text-apple-darksecondary mb-3">Academic &amp; Research Affairs</p>
+                                
+                                <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-xs font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss dark:hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-3 py-1.5 rounded-full border border-apple-border/60 dark:border-apple-darkborder/60">
+                                    <span>Workplace Details</span>
+                                    <svg class="w-3.5 h-3.5 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                
+                                <div class="details-content hidden mt-3 pt-3 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-xs space-y-1">
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Dean of Faculty of Engineering</p>
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext mt-1.5">Workplace:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Chulalongkorn University</p>
+                                </div>
+                            </div>
+
+                            <!-- VP 2 -->
+                            <div class="glass-card rounded-2xl p-5 text-center border border-apple-border dark:border-apple-darkborder shadow-sm hover:shadow-md transition-all duration-300 relative group">
+                                <div class="relative w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-iatss/60">
+                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Vice President Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                </div>
+                                <div class="inline-block px-2.5 py-0.5 rounded-full bg-iatss-light dark:bg-iatss/20 text-iatss text-[10px] font-bold uppercase tracking-wider mb-2">
+                                    Vice President
+                                </div>
+                                <h3 class="text-base font-bold text-apple-text dark:text-apple-darktext">Ms. Peeraya Kitisak</h3>
+                                <p class="text-xs text-apple-secondary dark:text-apple-darksecondary mb-3">Secretariat &amp; Government Relations</p>
+                                
+                                <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-xs font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss dark:hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-3 py-1.5 rounded-full border border-apple-border/60 dark:border-apple-darkborder/60">
+                                    <span>Workplace Details</span>
+                                    <svg class="w-3.5 h-3.5 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                
+                                <div class="details-content hidden mt-3 pt-3 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-xs space-y-1">
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Deputy Director, Climate Change Bureau</p>
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext mt-1.5">Workplace:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Ministry of Natural Resources and Environment</p>
+                                </div>
+                            </div>
+
+                            <!-- VP 3 -->
+                            <div class="glass-card rounded-2xl p-5 text-center border border-apple-border dark:border-apple-darkborder shadow-sm hover:shadow-md transition-all duration-300 relative group">
+                                <div class="relative w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-iatss/60">
+                                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="Vice President Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                </div>
+                                <div class="inline-block px-2.5 py-0.5 rounded-full bg-iatss-light dark:bg-iatss/20 text-iatss text-[10px] font-bold uppercase tracking-wider mb-2">
+                                    Vice President
+                                </div>
+                                <h3 class="text-base font-bold text-apple-text dark:text-apple-darktext">Mr. Narong Ritthichai</h3>
+                                <p class="text-xs text-apple-secondary dark:text-apple-darksecondary mb-3">Alumni Network &amp; Partnerships</p>
+                                
+                                <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-xs font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss dark:hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-3 py-1.5 rounded-full border border-apple-border/60 dark:border-apple-darkborder/60">
+                                    <span>Workplace Details</span>
+                                    <svg class="w-3.5 h-3.5 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                
+                                <div class="details-content hidden mt-3 pt-3 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-xs space-y-1">
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Vice President of Mobility Systems</p>
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext mt-1.5">Workplace:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Bangkok Transit Authority Advisory</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Connector Lines Level 2 -> Level 3 (Desktop) -->
+                        <div class="hidden lg:flex flex-col items-center my-2">
+                            <div class="w-[80%] h-0.5 bg-iatss/30"></div>
+                            <div class="w-0.5 h-6 bg-iatss/30"></div>
+                        </div>
+
+                        <!-- LEVEL 3: FIVE COMMITTEES (Bottom) -->
+                        <div class="pt-6 lg:pt-0">
+                            <div class="text-center mb-4 lg:hidden">
+                                <span class="text-xs font-bold text-apple-secondary uppercase tracking-widest">Committee Members</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                <!-- Committee 1 -->
+                                <div class="glass-card rounded-2xl p-4 text-center border border-apple-border/80 dark:border-apple-darkborder/80 hover:border-iatss/40 transition-all duration-300 group">
+                                    <div class="relative w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border border-iatss/40">
+                                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80" alt="Committee Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="text-[10px] font-semibold text-iatss uppercase tracking-wider mb-1">Committee</div>
+                                    <h4 class="text-sm font-bold text-apple-text dark:text-apple-darktext">Dr. Kanya Panit</h4>
+                                    <p class="text-[11px] text-apple-secondary dark:text-apple-darksecondary mb-2">Selection &amp; Evaluation</p>
+                                    
+                                    <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-[11px] font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-2.5 py-1 rounded-full border border-apple-border/50 dark:border-apple-darkborder/50">
+                                        <span>Details</span>
+                                        <svg class="w-3 h-3 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    
+                                    <div class="details-content hidden mt-2 pt-2 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-[11px] space-y-1">
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Senior Academic Fellow</p>
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext mt-1">Workplace:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Thammasat University</p>
+                                    </div>
+                                </div>
+
+                                <!-- Committee 2 -->
+                                <div class="glass-card rounded-2xl p-4 text-center border border-apple-border/80 dark:border-apple-darkborder/80 hover:border-iatss/40 transition-all duration-300 group">
+                                    <div class="relative w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border border-iatss/40">
+                                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80" alt="Committee Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="text-[10px] font-semibold text-iatss uppercase tracking-wider mb-1">Committee</div>
+                                    <h4 class="text-sm font-bold text-apple-text dark:text-apple-darktext">Mr. Thanawat Siri</h4>
+                                    <p class="text-[11px] text-apple-secondary dark:text-apple-darksecondary mb-2">Transport Policy</p>
+                                    
+                                    <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-[11px] font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-2.5 py-1 rounded-full border border-apple-border/50 dark:border-apple-darkborder/50">
+                                        <span>Details</span>
+                                        <svg class="w-3 h-3 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    
+                                    <div class="details-content hidden mt-2 pt-2 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-[11px] space-y-1">
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Chief Policy Analyst</p>
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext mt-1">Workplace:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Ministry of Transport</p>
+                                    </div>
+                                </div>
+
+                                <!-- Committee 3 -->
+                                <div class="glass-card rounded-2xl p-4 text-center border border-apple-border/80 dark:border-apple-darkborder/80 hover:border-iatss/40 transition-all duration-300 group">
+                                    <div class="relative w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border border-iatss/40">
+                                        <img src="https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=300&q=80" alt="Committee Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="text-[10px] font-semibold text-iatss uppercase tracking-wider mb-1">Committee</div>
+                                    <h4 class="text-sm font-bold text-apple-text dark:text-apple-darktext">Ms. Siriporn Vong</h4>
+                                    <p class="text-[11px] text-apple-secondary dark:text-apple-darksecondary mb-2">ESG &amp; Sustainability</p>
+                                    
+                                    <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-[11px] font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-2.5 py-1 rounded-full border border-apple-border/50 dark:border-apple-darkborder/50">
+                                        <span>Details</span>
+                                        <svg class="w-3 h-3 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    
+                                    <div class="details-content hidden mt-2 pt-2 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-[11px] space-y-1">
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Head of Environmental Affairs</p>
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext mt-1">Workplace:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">PTT Public Company Limited</p>
+                                    </div>
+                                </div>
+
+                                <!-- Committee 4 -->
+                                <div class="glass-card rounded-2xl p-4 text-center border border-apple-border/80 dark:border-apple-darkborder/80 hover:border-iatss/40 transition-all duration-300 group">
+                                    <div class="relative w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border border-iatss/40">
+                                        <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80" alt="Committee Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="text-[10px] font-semibold text-iatss uppercase tracking-wider mb-1">Committee</div>
+                                    <h4 class="text-sm font-bold text-apple-text dark:text-apple-darktext">Dr. Prasert Chai</h4>
+                                    <p class="text-[11px] text-apple-secondary dark:text-apple-darksecondary mb-2">Smart Infrastructure</p>
+                                    
+                                    <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-[11px] font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-2.5 py-1 rounded-full border border-apple-border/50 dark:border-apple-darkborder/50">
+                                        <span>Details</span>
+                                        <svg class="w-3 h-3 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    
+                                    <div class="details-content hidden mt-2 pt-2 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-[11px] space-y-1">
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Director of Innovation Lab</p>
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext mt-1">Workplace:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">KMUTT University</p>
+                                    </div>
+                                </div>
+
+                                <!-- Committee 5 -->
+                                <div class="glass-card rounded-2xl p-4 text-center border border-apple-border/80 dark:border-apple-darkborder/80 hover:border-iatss/40 transition-all duration-300 group">
+                                    <div class="relative w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border border-iatss/40">
+                                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80" alt="Committee Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="text-[10px] font-semibold text-iatss uppercase tracking-wider mb-1">Committee</div>
+                                    <h4 class="text-sm font-bold text-apple-text dark:text-apple-darktext">Ms. Nareerat Wong</h4>
+                                    <p class="text-[11px] text-apple-secondary dark:text-apple-darksecondary mb-2">Public Relations</p>
+                                    
+                                    <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-[11px] font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-2.5 py-1 rounded-full border border-apple-border/50 dark:border-apple-darkborder/50">
+                                        <span>Details</span>
+                                        <svg class="w-3 h-3 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    
+                                    <div class="details-content hidden mt-2 pt-2 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-[11px] space-y-1">
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Head of Communications</p>
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext mt-1">Workplace:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Digital Economy Promotion Agency (DEPA)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ALUMNI TAB -->
+            <div id="tab-content-alumni" class="tab-panel hidden transition-opacity duration-500 opacity-0">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                    <div class="glass-card rounded-3xl overflow-hidden apple-shadow-lg">
+                        <div class="p-6 sm:p-8 border-b border-apple-border/60 dark:border-apple-darkborder/60">
+                            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+                                <div>
+                                    <div class="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-iatss mb-3">
+                                        <span class="w-2 h-2 rounded-full bg-iatss"></span>
+                                        Thai Alumni Network
+                                    </div>
+                                    <h2 class="text-3xl sm:text-4xl font-extrabold text-apple-text dark:text-apple-darktext">Connect by experience</h2>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary mt-2 max-w-2xl">Explore the professional relationships and shared impact of IATSS Forum alumni across Thailand.</p>
+                                </div>
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <button id="btn-profession" onclick="setAlumniLayout('profession')" class="px-4 py-2.5 bg-iatss text-white rounded-full text-xs font-semibold transition shadow-sm hover:bg-iatss-hover">Profession network</button>
+                                    <button id="btn-batch" onclick="setAlumniLayout('batch')" class="px-4 py-2.5 bg-apple-subtle dark:bg-apple-darksubtle text-apple-secondary dark:text-apple-darksecondary rounded-full text-xs font-semibold transition hover:text-iatss">Arrange by batch</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="network-container" class="w-full h-[520px] sm:h-[600px] bg-apple-subtle/60 dark:bg-apple-darksubtle/60"></div>
+                        <div class="px-6 py-4 border-t border-apple-border/60 dark:border-apple-darkborder/60 text-xs text-apple-secondary dark:text-apple-darksecondary">
+                            Select a node to view alumni details. Use the controls above to change the network arrangement.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ TAB -->
+            <div id="tab-content-faq" class="tab-panel hidden transition-opacity duration-500 opacity-0">
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-apple-text dark:text-apple-darktext">Frequently Asked Questions</h2>
+                        <p class="text-apple-secondary dark:text-apple-darksecondary mt-2">Key details regarding application and forum participation.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <details class="group glass-card rounded-3xl p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+                            <summary class="flex items-center justify-between font-semibold text-lg text-apple-text dark:text-apple-darktext">
+                                <span>What is the core mission of IATSS Forum?</span>
+                                <span class="ml-4 transition-transform group-open:rotate-180 text-iatss">▼</span>
+                            </summary>
+                            <p class="mt-4 text-apple-secondary dark:text-apple-darksecondary text-sm leading-relaxed">
+                                Founded in 1985 in Suzuka, Japan, the IATSS Forum brings together young professionals from ASEAN countries to "Think and Learn Together", promoting mutual understanding, leadership development, and sustainable community growth.
+                            </p>
+                        </details>
+
+                        <details class="group glass-card rounded-3xl p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+                            <summary class="flex items-center justify-between font-semibold text-lg text-apple-text dark:text-apple-darktext">
+                                <span>How do Thai applicants apply for the program?</span>
+                                <span class="ml-4 transition-transform group-open:rotate-180 text-iatss">▼</span>
+                            </summary>
+                            <p class="mt-4 text-apple-secondary dark:text-apple-darksecondary text-sm leading-relaxed">
+                                Thai candidates can submit their applications through the Department of Climate Change and Environment (DCCE), Ministry of Natural Resources and Environment, which acts as the official Thai Secretariat.
+                            </p>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACT TAB -->
+            <div id="tab-content-contact" class="tab-panel hidden transition-opacity duration-500 opacity-0">
+                <div class="max-w-3xl mx-auto space-y-8 glass-card p-8 sm:p-10 rounded-3xl">
+                    <div class="text-center">
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-apple-text dark:text-apple-darktext">Get in Touch</h2>
+                        <p class="text-apple-secondary dark:text-apple-darksecondary mt-2">Connect with the Thai Secretariat or Global Forum Office.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                        <div class="space-y-2 p-5 rounded-2xl bg-apple-subtle dark:bg-apple-darksubtle">
+                            <h3 class="font-bold text-iatss text-base">Secretariat in Thailand</h3>
+                            <p class="text-apple-text dark:text-apple-darktext font-medium">Department of Climate Change and Environment</p>
+                            <p class="text-apple-secondary dark:text-apple-darksecondary">Ministry of Natural Resources and Environment, Bangkok</p>
+                            <a href="https://www.dcce.go.th/tag/iatss-forum/" target="_blank" class="inline-block text-iatss font-semibold hover:underline pt-2">Visit Secretariat Portal →</a>
+                        </div>
+
+                        <div class="space-y-2 p-5 rounded-2xl bg-apple-subtle dark:bg-apple-darksubtle">
+                            <h3 class="font-bold text-iatss text-base">Main Office</h3>
+                            <p class="text-apple-text dark:text-apple-darktext font-medium">IATSS Forum Japan</p>
+                            <p class="text-apple-secondary dark:text-apple-darksecondary">Suzuka City, Mie Prefecture, Japan</p>
+                            <a href="https://www.iatssforum.jp/en/" target="_blank" class="inline-block text-iatss font-semibold hover:underline pt-2">Visit Official Website →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Minimalist Apple-style Footer -->
+    <footer class="border-t border-apple-border/80 dark:border-apple-darkborder/80 bg-white dark:bg-apple-darkbg py-8 text-xs text-apple-secondary dark:text-apple-darksecondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+                &copy; <span id="year"></span> IATSS Forum Thailand. All rights reserved.
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="https://www.iatssforum.jp/en/" target="_blank" class="hover:text-iatss transition-colors">IATSS Forum Main Page</a>
+                <a href="https://www.dcce.go.th/tag/iatss-forum/" target="_blank" class="hover:text-iatss transition-colors">Thai Secretariat (DCCE)</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Project Database ordered CHRONOLOGICALLY (Most Recent to Oldest)
+        const projectDatabase = [
+            {
+                id: "proj-2024-1",
+                name: "Smart EV First-Mile Feeder Systems",
+                sghs: "Economy",
+                year: "2024",
+                dateLabel: "Jan 2024",
+                location: "Bangkok",
+                mapCoords: { x: 45, y: 52 },
+                detail: "Developing urban electric feeder networks connecting Bangkok suburban commuters with central mass transit lines to reduce carbon emissions.",
+                image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: "proj-2023-2",
+                name: "Zero-Waste Nan River Watershed Rehabilitation",
+                sghs: "Biosphere",
+                year: "2023",
+                dateLabel: "Nov 2023",
+                location: "Nan",
+                mapCoords: { x: 46, y: 16 },
+                detail: "Community-driven river reforestation, soil erosion prevention, and sustainable biodiversity monitoring in northern Thailand.",
+                image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: "proj-2023-1",
+                name: "Youth Helmet & Road Safety Action",
+                sghs: "Society",
+                year: "2023",
+                dateLabel: "May 2023",
+                location: "Chiang Mai",
+                mapCoords: { x: 34, y: 18 },
+                detail: "Empowering university student ambassadors to advocate for traffic safety regulations, helmet usage, and safer pedestrian zones.",
+                image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: "proj-2022-2",
+                name: "Eastern Seaboard Circular Industrial Grid",
+                sghs: "Economy",
+                year: "2022",
+                dateLabel: "Oct 2022",
+                location: "Rayong",
+                mapCoords: { x: 58, y: 57 },
+                detail: "Cross-sector industrial waste heat and polymer recycling exchange designed by alumni environmental engineers.",
+                image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: "proj-2022-1",
+                name: "Andaman Coastal Mangrove Eco-Restoration",
+                sghs: "Biosphere",
+                year: "2022",
+                dateLabel: "Mar 2022",
+                location: "Phuket",
+                mapCoords: { x: 28, y: 78 },
+                detail: "Marine coastal mangrove sanctuary rehabilitation and community eco-tourism guidelines empowering coastal fishermen.",
+                image: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: "proj-2021-1",
+                name: "Isan Agricultural Solar Microgrid",
+                sghs: "Society",
+                year: "2021",
+                dateLabel: "Aug 2021",
+                location: "Khon Kaen",
+                mapCoords: { x: 68, y: 34 },
+                detail: "Decentralized solar microgrid powering community water irrigation pumps and rural learning centers across Northeastern Thailand.",
+                image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        let currentSGHSFilter = 'all';
+        let selectedProjectId = 'proj-2024-1';
+
+        // Render Projects List in Chronological Order
+        function renderProjectsList() {
+            const container = document.getElementById('projects-list-container');
+            if (!container) return;
+
+            const filtered = projectDatabase.filter(p => {
+                return (currentSGHSFilter === 'all') || (p.sghs === currentSGHSFilter);
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="glass-card p-8 rounded-2xl text-center text-apple-secondary dark:text-apple-darksecondary">
+                        No projects match the selected SDG category.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+
+            filtered.forEach(proj => {
+                const isSelected = proj.id === selectedProjectId;
+                const card = document.createElement('div');
+                card.className = `glass-card p-4 rounded-2xl border ${isSelected ? 'border-2 border-iatss shadow-md bg-iatss-light/40 dark:bg-iatss/15' : 'border-apple-border dark:border-apple-darkborder hover:border-iatss/40'} cursor-pointer transition-all duration-300 flex flex-col sm:flex-row gap-4 items-center group relative`;
+                card.onclick = () => selectProject(proj.id);
+
+                const sghsBadgeColor = proj.sghs === 'Economy' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' :
+                                       proj.sghs === 'Society' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300' :
+                                       'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300';
+
+                card.innerHTML = `
+                    <div class="w-full sm:w-28 h-28 shrink-0 rounded-xl overflow-hidden relative border border-apple-border/50 dark:border-apple-darkborder/50">
+                        <img src="${proj.image}" alt="${proj.name}" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        <div class="absolute inset-0 bg-black/10" oncontextmenu="return false;"></div>
+                    </div>
+                    <div class="flex-grow space-y-1.5 text-left w-full">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${sghsBadgeColor}">${proj.sghs}</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-apple-subtle dark:bg-apple-darksubtle text-apple-secondary dark:text-apple-darksecondary border border-apple-border/60">${proj.dateLabel}</span>
+                            <span class="text-xs font-semibold text-iatss flex items-center gap-1 ml-auto">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                ${proj.location}
+                            </span>
+                        </div>
+                        <h3 class="text-sm font-bold text-apple-text dark:text-apple-darktext group-hover:text-iatss transition-colors leading-snug">${proj.name}</h3>
+                        <p class="text-xs text-apple-secondary dark:text-apple-darksecondary line-clamp-2 leading-relaxed">${proj.detail}</p>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // Render Thailand Map Pins & Blinking Marker
+        function renderMapPins() {
+            const layer = document.getElementById('map-pins-layer');
+            if (!layer) return;
+
+            layer.innerHTML = '';
+
+            projectDatabase.forEach(proj => {
+                const isSelected = proj.id === selectedProjectId;
+                const pin = document.createElement('div');
+                pin.style.left = `${proj.mapCoords.x}%`;
+                pin.style.top = `${proj.mapCoords.y}%`;
+                pin.className = 'absolute transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer group';
+                pin.onclick = () => selectProject(proj.id);
+
+                if (isSelected) {
+                    // Blinking Radar Spot for selected project
+                    pin.innerHTML = `
+                        <div class="relative flex items-center justify-center">
+                            <span class="absolute inline-flex h-9 w-9 rounded-full bg-iatss opacity-75 animate-ping"></span>
+                            <span class="absolute inline-flex h-6 w-6 rounded-full bg-iatss/40 animate-pulse"></span>
+                            <div class="relative w-4.5 h-4.5 rounded-full bg-iatss border-2 border-white dark:border-slate-900 shadow-xl flex items-center justify-center text-white text-[8px] font-bold">●</div>
+                            <div class="absolute bottom-full mb-2 whitespace-nowrap bg-apple-text dark:bg-white text-white dark:text-apple-text text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-xl z-30">
+                                ${proj.location} (${proj.year})
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    pin.innerHTML = `
+                        <div class="w-3 h-3 rounded-full bg-slate-400 dark:bg-slate-600 border border-white dark:border-slate-900 hover:bg-iatss hover:scale-125 transition-all shadow-sm"></div>
+                    `;
+                }
+
+                layer.appendChild(pin);
+            });
+
+            // Update Map Info Callout Banner
+            const activeProj = projectDatabase.find(p => p.id === selectedProjectId);
+            if (activeProj) {
+                document.getElementById('active-map-location-name').textContent = activeProj.location + ', Thailand';
+                document.getElementById('map-info-title').textContent = activeProj.name;
+                document.getElementById('map-info-year').textContent = activeProj.year;
+                document.getElementById('map-info-desc').textContent = `${activeProj.sghs} Pillar — ${activeProj.detail}`;
+            }
+        }
+
+        function selectProject(id) {
+            selectedProjectId = id;
+            renderProjectsList();
+            renderMapPins();
+        }
+
+        function filterProjects(category) {
+            currentSGHSFilter = category;
+            const buttons = document.querySelectorAll('.sghs-btn');
+            buttons.forEach(btn => {
+                btn.className = "sghs-btn px-3.5 py-1.5 text-xs font-semibold rounded-full text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-all duration-200";
+            });
+
+            const activeBtn = document.getElementById(`sghs-filter-${category}`);
+            if (activeBtn) {
+                activeBtn.className = "sghs-btn active-sghs px-3.5 py-1.5 text-xs font-bold rounded-full bg-iatss text-white shadow-sm transition-all duration-200";
+            }
+
+            renderProjectsList();
+        }
+
+        const alumniData = [
+            { id: 1, row: 1, name: "Somsak Jaidee", nickname: "Sak", batch: 1, position: "Former Lecturer", place: "Prince of Songkla University" },
+            { id: 2, row: 2, name: "Pranee Wong", nickname: "Nee", batch: 1, position: "Head of English Department", place: "Suan Dusit Rajapat Institute" },
+            { id: 3, row: 3, name: "Kitti Suwan", nickname: "Kit", batch: 2, position: "Assistant Professor", place: "Chulalongkorn University" },
+            { id: 4, row: 4, name: "Anan Kaew", nickname: "Nan", batch: 2, position: "Traffic Inspector", place: "Khon Kaen Police Traffic" },
+            { id: 5, row: 5, name: "Wichai Chai", nickname: "Chai", batch: 3, position: "Technical Officer", place: "Ministry of Public Health" },
+            { id: 8, row: 8, name: "Malee Rung", nickname: "Lee", batch: 3, position: "Environmentalist", place: "National Environment Board" },
+            { id: 9, row: 9, name: "Somchai Boon", nickname: "Som", batch: 4, position: "Advisor", place: "Bangkok Metro Plc." },
+            { id: 10, row: 10, name: "Nipon Suk", nickname: "Pon", batch: 4, position: "Instructor", place: "Chiang Mai University" }
+        ];
+
+        let alumniNetwork = null;
+        let alumniNodes = null;
+
+        function initAlumniNetwork() {
+            const container = document.getElementById('network-container');
+            if (!container || typeof vis === 'undefined') return;
+
+            alumniNodes = new vis.DataSet(alumniData.map(alumnus => ({
+                id: alumnus.id,
+                label: alumnus.nickname,
+                title: `${alumnus.nickname}: ${alumnus.position}`,
+                shape: 'circularImage',
+                image: `https://api.dicebear.com/7.x/bottts/svg?seed=AlumniRow${alumnus.row}`,
+                brokenImage: 'https://api.dicebear.com/7.x/initials/svg?seed=Alumni',
+                size: 24,
+                color: { background: '#006954', border: '#8ac9bb', highlight: { background: '#004d3d', border: '#006954' } },
+                font: { color: '#ffffff', size: 11 },
+                borderWidth: 2,
+                data: { ...alumnus, image: `https://api.dicebear.com/7.x/bottts/svg?seed=AlumniRow${alumnus.row}` }
+            })));
+
+            const edges = [
+                { from: 1, to: 3, value: 0.45 },
+                { from: 1, to: 10, value: 0.52 },
+                { from: 3, to: 10, value: 0.65 },
+                { from: 5, to: 8, value: 0.58 }
+            ].map(edge => ({ ...edge, color: { color: 'rgba(0, 105, 84, 0.28)' } }));
+
+            alumniNetwork = new vis.Network(container, { nodes: alumniNodes, edges: new vis.DataSet(edges) }, {
+                physics: { solver: 'forceAtlas2Based', forceAtlas2Based: { gravitationalConstant: -40, springLength: 80 } },
+                interaction: { hover: true, navigationButtons: false },
+                nodes: { borderWidth: 2 }
+            });
+
+            alumniNetwork.on('click', params => {
+                if (params.nodes.length > 0) {
+                    const node = alumniNodes.get(params.nodes[0]);
+                    if (node && node.data) openAlumniModal(node.data);
+                }
+            });
+        }
+
+        function setAlumniLayout(type) {
+            if (!alumniNetwork || !alumniNodes) return;
+            const professionButton = document.getElementById('btn-profession');
+            const batchButton = document.getElementById('btn-batch');
+            const activeClasses = 'bg-iatss text-white shadow-sm';
+            const inactiveClasses = 'bg-apple-subtle dark:bg-apple-darksubtle text-apple-secondary dark:text-apple-darksecondary';
+            professionButton.className = `px-4 py-2.5 rounded-full text-xs font-semibold transition hover:text-iatss ${type === 'profession' ? activeClasses : inactiveClasses}`;
+            batchButton.className = `px-4 py-2.5 rounded-full text-xs font-semibold transition hover:text-iatss ${type === 'batch' ? activeClasses : inactiveClasses}`;
+
+            if (type === 'profession') {
+                alumniNetwork.setOptions({ physics: { enabled: true }, edges: { hidden: false } });
+                return;
+            }
+
+            alumniNetwork.setOptions({ physics: { enabled: false }, edges: { hidden: true } });
+            const batches = [...new Set(alumniData.map(alumnus => alumnus.batch))].sort((a, b) => a - b);
+            const batchPositions = [];
+            batches.forEach((batch, batchIndex) => {
+                const members = alumniData.filter(alumnus => alumnus.batch === batch);
+                const spacing = 150;
+                const startX = -((members.length - 1) * spacing) / 2;
+                members.forEach((alumnus, memberIndex) => {
+                    batchPositions.push({
+                        id: alumnus.id,
+                        x: startX + (memberIndex * spacing),
+                        y: batchIndex * 150
+                    });
+                });
+            });
+            alumniNodes.update(batchPositions);
+            alumniNetwork.fit({ animation: true });
+        }
+
+        function openAlumniModal(alumnus) {
+            document.getElementById('modalImg').src = alumnus.image;
+            document.getElementById('modalRow').textContent = `Row #${alumnus.row}`;
+            document.getElementById('modalName').textContent = alumnus.name;
+            document.getElementById('modalNickname').textContent = `"${alumnus.nickname}"`;
+            document.getElementById('modalBatch').textContent = `Batch ${alumnus.batch}`;
+            document.getElementById('modalPosition').textContent = alumnus.position || 'N/A';
+            document.getElementById('modalPlace').textContent = alumnus.place || 'N/A';
+            document.getElementById('detailModal').classList.remove('hidden');
+            document.getElementById('detailModal').classList.add('flex');
+        }
+
+        function closeAlumniModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+            document.getElementById('detailModal').classList.remove('flex');
+        }
+
+        // Photo Database for Bento Grid
+        const photoDatabase = {
+            program: [
+                { title: "Suzuka Campus Leadership Seminar", tag: "Suzuka, Japan", colSpan: "col-span-1 md:col-span-2", rowSpan: "row-span-2", img: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80" },
+                { title: "Cross-Cultural Workshop", tag: "Knowledge Exchange", colSpan: "col-span-1", rowSpan: "row-span-1", img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80" },
+                { title: "Sustainable Mobility Site Visit", tag: "Field Study", colSpan: "col-span-1", rowSpan: "row-span-1", img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80" },
+                { title: "Group Synergy & Problem Solving", tag: "Teamwork", colSpan: "col-span-1 md:col-span-2", rowSpan: "row-span-1", img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=80" },
+                { title: "Japanese Cultural Immersion", tag: "Mie Prefecture", colSpan: "col-span-1", rowSpan: "row-span-1", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80" },
+                { title: "Final Forum Presentation", tag: "Leadership", colSpan: "col-span-1", rowSpan: "row-span-1", img: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80" }
+            ],
+            alumni: [
+                { title: "Thailand Alumni Annual Gathering", tag: "Bangkok, Thailand", colSpan: "col-span-1 md:col-span-2", rowSpan: "row-span-2", img: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1000&q=80" },
+                { title: "Community Environmental Project", tag: "Eco Initiative", colSpan: "col-span-1", rowSpan: "row-span-1", img: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80" },
+                { title: "Mentorship & Selection Panel", tag: "DCCE Secretariat", colSpan: "col-span-1", rowSpan: "row-span-1", img: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80" },
+                { title: "ASEAN Alumni Summit", tag: "Regional Impact", colSpan: "col-span-1 md:col-span-2", rowSpan: "row-span-1", img: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=1000&q=80" },
+                { title: "Smart Mobility Forum Thailand", tag: "Urban Innovation", colSpan: "col-span-1", rowSpan: "row-span-1", img: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80" },
+                { title: "Youth Leadership Dialogue", tag: "Future Generation", colSpan: "col-span-1", rowSpan: "row-span-1", img: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80" }
+            ]
+        };
+
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function renderBentoGrid(category) {
+            const container = document.getElementById('bento-container');
+            if (!container) return;
+
+            const items = shuffleArray(photoDatabase[category]);
+            container.innerHTML = '';
+
+            items.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = `${item.colSpan} ${item.rowSpan} group relative overflow-hidden rounded-3xl bg-apple-subtle dark:bg-apple-darksubtle apple-shadow border border-apple-border/50 dark:border-apple-darkborder/50 select-none`;
+                
+                card.innerHTML = `
+                    <img src="${item.img}" alt="${item.title}" class="protected-img absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                    <div class="absolute inset-0 z-10" oncontextmenu="return false;" ondragstart="return false;"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-5 z-20 text-white transform group-hover:translate-y-0 transition-transform">
+                        <span class="inline-block text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-iatss/90 backdrop-blur-md mb-2">${item.tag}</span>
+                        <h3 class="text-base sm:text-lg font-bold leading-snug drop-shadow-sm">${item.title}</h3>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function setBentoCategory(category) {
+            const btnProg = document.getElementById('btn-bento-program');
+            const btnAlum = document.getElementById('btn-bento-alumni');
+
+            if (category === 'program') {
+                btnProg.className = "px-5 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 bg-iatss text-white shadow-sm";
+                btnAlum.className = "px-5 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext";
+            } else {
+                btnAlum.className = "px-5 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 bg-iatss text-white shadow-sm";
+                btnProg.className = "px-5 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext";
+            }
+
+            renderBentoGrid(category);
+        }
+
+        // Disable Context Menu / Saving on Protected Images
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.classList.contains('protected-img') || e.target.closest('#bento-container')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const sunIcon = document.getElementById('theme-toggle-sun-icon');
+            const moonIcon = document.getElementById('theme-toggle-moon-icon');
+
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('iatss_theme', 'light');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('iatss_theme', 'dark');
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+            }
+        }
+
+        (function initTheme() {
+            const savedTheme = localStorage.getItem('iatss_theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-toggle-moon-icon').classList.add('hidden');
+                document.getElementById('theme-toggle-sun-icon').classList.remove('hidden');
+            }
+        })();
+
+        let animated = false;
+        function animateCounters() {
+            if (animated) return;
+            animated = true;
+
+            const animateValue = (id, start, end, duration) => {
+                const obj = document.getElementById(id);
+                if (!obj) return;
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerHTML = Math.floor(progress * (end - start) + start);
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            };
+
+            animateValue("counter-alumni", 0, 250, 1800);
+            animateValue("counter-professions", 0, 18, 1500);
+            animateValue("counter-years", 0, 40, 1600);
+        }
+
+        function switchTab(tabId) {
+            const panels = document.querySelectorAll('.tab-panel');
+            panels.forEach(panel => {
+                panel.classList.add('hidden');
+                panel.classList.remove('opacity-100');
+                panel.classList.add('opacity-0');
+            });
+
+            const selectedPanel = document.getElementById(`tab-content-${tabId}`);
+            if (selectedPanel) {
+                selectedPanel.classList.remove('hidden');
+                setTimeout(() => {
+                    selectedPanel.classList.remove('opacity-0');
+                    selectedPanel.classList.add('opacity-100');
+                }, 50);
+            }
+
+            const navButtons = document.querySelectorAll('.tab-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-apple-text', 'dark:text-apple-darktext', 'shadow-sm');
+                btn.classList.add('text-apple-secondary', 'dark:text-apple-darksecondary');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'dark:bg-slate-800', 'text-apple-text', 'dark:text-apple-darktext', 'shadow-sm');
+                activeBtn.classList.remove('text-apple-secondary', 'dark:text-apple-darksecondary');
+            }
+
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                toggleMobileMenu();
+            }
+
+            if (tabId === 'about') {
+                animated = false;
+                animateCounters();
+            }
+
+            if (tabId === 'alumni' && alumniNetwork) {
+                setTimeout(() => {
+                    alumniNetwork.redraw();
+                    alumniNetwork.fit();
+                }, 100);
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function toggleNodeDetails(btn) {
+            const card = btn.closest('div');
+            const details = card.querySelector('.details-content');
+            const chevron = btn.querySelector('.icon-chevron');
+            
+            if (details) {
+                details.classList.toggle('hidden');
+                if (chevron) {
+                    chevron.classList.toggle('rotate-180');
+                }
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(animateCounters, 200);
+            renderBentoGrid('program');
+            renderProjectsList();
+            renderMapPins();
+            initAlumniNetwork();
+        });
+    </script>
+    <script src="assets/js/site.js"></script>
+</body>
+</html>
