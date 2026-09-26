@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>People | IATSS Forum Thailand</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        iatss: { DEFAULT: "#006954", dark: "#004d3d", light: "#e6f0ed", hover: "#005443" },
+                        apple: { bg: "#ffffff", darkbg: "#0a0a0c", subtle: "#f5f5f7", darksubtle: "#161618", text: "#1d1d1f", darktext: "#f5f5f7", secondary: "#86868b", darksecondary: "#a1a1a6", border: "#e5e5e7", darkborder: "#2c2c2e" }
+                    },
+                    fontFamily: { sans: ["-apple-system", "BlinkMacSystemFont", "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", "sans-serif"] }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="assets/css/site.css">
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body data-page="people" class="bg-apple-bg dark:bg-apple-darkbg text-apple-text dark:text-apple-darktext font-sans antialiased selection:bg-iatss selection:text-white flex flex-col min-h-screen transition-colors duration-300">
+    <div id="site-header"></div>
+    <div id="alumni-modal"></div>
+    <main class="flex-grow">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-20">
+<div class="max-w-6xl mx-auto space-y-10">
+                    <div class="text-center space-y-2">
+                        <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-iatss-light dark:bg-iatss/20 text-iatss text-xs font-semibold">
+                            <span>Organizational Hierarchy</span>
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-apple-text dark:text-apple-darktext tracking-tight">Thailand Steering Committee</h2>
+                        <p class="text-sm sm:text-base text-apple-secondary dark:text-apple-darksecondary max-w-2xl mx-auto">
+                            Guiding the vision, candidate selection, and strategic leadership of the IATSS Forum network across Thailand.
+                        </p>
+                    </div>
+
+                    <!-- Hierarchy Tree Container -->
+                    <div class="relative py-4">
+                        
+                        <!-- LEVEL 1: PRESIDENT (Top) -->
+                        <div class="flex justify-center relative">
+                            <div class="glass-card rounded-3xl p-6 w-full max-w-sm text-center border-2 border-iatss/40 shadow-lg hover:shadow-xl transition-all duration-300 relative z-10 group">
+                                <div class="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden border-2 border-iatss shadow-md">
+                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="President Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                </div>
+                                <div class="inline-block px-3 py-0.5 rounded-full bg-iatss text-white text-[11px] font-bold uppercase tracking-wider mb-2">
+                                    President
+                                </div>
+                                <h3 class="text-xl font-extrabold text-apple-text dark:text-apple-darktext">Dr. Somchai Techawong</h3>
+                                <p class="text-xs text-iatss font-semibold mb-3">Chairperson, Thailand Steering Committee</p>
+                                
+                                <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-xs font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss dark:hover:text-iatss transition-colors gap-1.5 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-3.5 py-1.5 rounded-full border border-apple-border/70 dark:border-apple-darkborder/70">
+                                    <span>Workplace Details</span>
+                                    <svg class="w-3.5 h-3.5 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                
+                                <div class="details-content hidden mt-3 pt-3 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-xs space-y-1">
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Director-General &amp; Senior Strategic Advisor</p>
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext mt-1.5">Workplace:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Department of Climate Change and Environment (DCCE)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Connector Lines Level 1 -> Level 2 (Desktop) -->
+                        <div class="hidden md:flex flex-col items-center my-2">
+                            <div class="w-0.5 h-8 bg-iatss/40"></div>
+                            <div class="w-[66%] h-0.5 bg-iatss/40"></div>
+                        </div>
+
+                        <!-- LEVEL 2: THREE VICE PRESIDENTS (Middle) -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 md:pt-0 relative">
+                            <!-- Desktop vertical stems -->
+                            <div class="hidden md:block absolute -top-0 left-[16.66%] w-0.5 h-6 bg-iatss/40"></div>
+                            <div class="hidden md:block absolute -top-0 left-[50%] w-0.5 h-6 bg-iatss/40"></div>
+                            <div class="hidden md:block absolute -top-0 left-[83.33%] w-0.5 h-6 bg-iatss/40"></div>
+
+                            <!-- VP 1 -->
+                            <div class="glass-card rounded-2xl p-5 text-center border border-apple-border dark:border-apple-darkborder shadow-sm hover:shadow-md transition-all duration-300 relative group">
+                                <div class="relative w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-iatss/60">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Vice President Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                </div>
+                                <div class="inline-block px-2.5 py-0.5 rounded-full bg-iatss-light dark:bg-iatss/20 text-iatss text-[10px] font-bold uppercase tracking-wider mb-2">
+                                    Vice President
+                                </div>
+                                <h3 class="text-base font-bold text-apple-text dark:text-apple-darktext">Prof. Dr. Chutima Suwan</h3>
+                                <p class="text-xs text-apple-secondary dark:text-apple-darksecondary mb-3">Academic &amp; Research Affairs</p>
+                                
+                                <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-xs font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss dark:hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-3 py-1.5 rounded-full border border-apple-border/60 dark:border-apple-darkborder/60">
+                                    <span>Workplace Details</span>
+                                    <svg class="w-3.5 h-3.5 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                
+                                <div class="details-content hidden mt-3 pt-3 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-xs space-y-1">
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Dean of Faculty of Engineering</p>
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext mt-1.5">Workplace:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Chulalongkorn University</p>
+                                </div>
+                            </div>
+
+                            <!-- VP 2 -->
+                            <div class="glass-card rounded-2xl p-5 text-center border border-apple-border dark:border-apple-darkborder shadow-sm hover:shadow-md transition-all duration-300 relative group">
+                                <div class="relative w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-iatss/60">
+                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Vice President Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                </div>
+                                <div class="inline-block px-2.5 py-0.5 rounded-full bg-iatss-light dark:bg-iatss/20 text-iatss text-[10px] font-bold uppercase tracking-wider mb-2">
+                                    Vice President
+                                </div>
+                                <h3 class="text-base font-bold text-apple-text dark:text-apple-darktext">Ms. Peeraya Kitisak</h3>
+                                <p class="text-xs text-apple-secondary dark:text-apple-darksecondary mb-3">Secretariat &amp; Government Relations</p>
+                                
+                                <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-xs font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss dark:hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-3 py-1.5 rounded-full border border-apple-border/60 dark:border-apple-darkborder/60">
+                                    <span>Workplace Details</span>
+                                    <svg class="w-3.5 h-3.5 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                
+                                <div class="details-content hidden mt-3 pt-3 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-xs space-y-1">
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Deputy Director, Climate Change Bureau</p>
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext mt-1.5">Workplace:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Ministry of Natural Resources and Environment</p>
+                                </div>
+                            </div>
+
+                            <!-- VP 3 -->
+                            <div class="glass-card rounded-2xl p-5 text-center border border-apple-border dark:border-apple-darkborder shadow-sm hover:shadow-md transition-all duration-300 relative group">
+                                <div class="relative w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-2 border-iatss/60">
+                                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="Vice President Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                </div>
+                                <div class="inline-block px-2.5 py-0.5 rounded-full bg-iatss-light dark:bg-iatss/20 text-iatss text-[10px] font-bold uppercase tracking-wider mb-2">
+                                    Vice President
+                                </div>
+                                <h3 class="text-base font-bold text-apple-text dark:text-apple-darktext">Mr. Narong Ritthichai</h3>
+                                <p class="text-xs text-apple-secondary dark:text-apple-darksecondary mb-3">Alumni Network &amp; Partnerships</p>
+                                
+                                <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-xs font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss dark:hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-3 py-1.5 rounded-full border border-apple-border/60 dark:border-apple-darkborder/60">
+                                    <span>Workplace Details</span>
+                                    <svg class="w-3.5 h-3.5 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                
+                                <div class="details-content hidden mt-3 pt-3 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-xs space-y-1">
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Vice President of Mobility Systems</p>
+                                    <p class="font-bold text-apple-text dark:text-apple-darktext mt-1.5">Workplace:</p>
+                                    <p class="text-apple-secondary dark:text-apple-darksecondary">Bangkok Transit Authority Advisory</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Connector Lines Level 2 -> Level 3 (Desktop) -->
+                        <div class="hidden lg:flex flex-col items-center my-2">
+                            <div class="w-[80%] h-0.5 bg-iatss/30"></div>
+                            <div class="w-0.5 h-6 bg-iatss/30"></div>
+                        </div>
+
+                        <!-- LEVEL 3: FIVE COMMITTEES (Bottom) -->
+                        <div class="pt-6 lg:pt-0">
+                            <div class="text-center mb-4 lg:hidden">
+                                <span class="text-xs font-bold text-apple-secondary uppercase tracking-widest">Committee Members</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                <!-- Committee 1 -->
+                                <div class="glass-card rounded-2xl p-4 text-center border border-apple-border/80 dark:border-apple-darkborder/80 hover:border-iatss/40 transition-all duration-300 group">
+                                    <div class="relative w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border border-iatss/40">
+                                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80" alt="Committee Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="text-[10px] font-semibold text-iatss uppercase tracking-wider mb-1">Committee</div>
+                                    <h4 class="text-sm font-bold text-apple-text dark:text-apple-darktext">Dr. Kanya Panit</h4>
+                                    <p class="text-[11px] text-apple-secondary dark:text-apple-darksecondary mb-2">Selection &amp; Evaluation</p>
+                                    
+                                    <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-[11px] font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-2.5 py-1 rounded-full border border-apple-border/50 dark:border-apple-darkborder/50">
+                                        <span>Details</span>
+                                        <svg class="w-3 h-3 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    
+                                    <div class="details-content hidden mt-2 pt-2 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-[11px] space-y-1">
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Senior Academic Fellow</p>
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext mt-1">Workplace:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Thammasat University</p>
+                                    </div>
+                                </div>
+
+                                <!-- Committee 2 -->
+                                <div class="glass-card rounded-2xl p-4 text-center border border-apple-border/80 dark:border-apple-darkborder/80 hover:border-iatss/40 transition-all duration-300 group">
+                                    <div class="relative w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border border-iatss/40">
+                                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80" alt="Committee Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="text-[10px] font-semibold text-iatss uppercase tracking-wider mb-1">Committee</div>
+                                    <h4 class="text-sm font-bold text-apple-text dark:text-apple-darktext">Mr. Thanawat Siri</h4>
+                                    <p class="text-[11px] text-apple-secondary dark:text-apple-darksecondary mb-2">Transport Policy</p>
+                                    
+                                    <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-[11px] font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-2.5 py-1 rounded-full border border-apple-border/50 dark:border-apple-darkborder/50">
+                                        <span>Details</span>
+                                        <svg class="w-3 h-3 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    
+                                    <div class="details-content hidden mt-2 pt-2 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-[11px] space-y-1">
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Chief Policy Analyst</p>
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext mt-1">Workplace:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Ministry of Transport</p>
+                                    </div>
+                                </div>
+
+                                <!-- Committee 3 -->
+                                <div class="glass-card rounded-2xl p-4 text-center border border-apple-border/80 dark:border-apple-darkborder/80 hover:border-iatss/40 transition-all duration-300 group">
+                                    <div class="relative w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border border-iatss/40">
+                                        <img src="https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=300&q=80" alt="Committee Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="text-[10px] font-semibold text-iatss uppercase tracking-wider mb-1">Committee</div>
+                                    <h4 class="text-sm font-bold text-apple-text dark:text-apple-darktext">Ms. Siriporn Vong</h4>
+                                    <p class="text-[11px] text-apple-secondary dark:text-apple-darksecondary mb-2">ESG &amp; Sustainability</p>
+                                    
+                                    <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-[11px] font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-2.5 py-1 rounded-full border border-apple-border/50 dark:border-apple-darkborder/50">
+                                        <span>Details</span>
+                                        <svg class="w-3 h-3 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    
+                                    <div class="details-content hidden mt-2 pt-2 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-[11px] space-y-1">
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Head of Environmental Affairs</p>
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext mt-1">Workplace:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">PTT Public Company Limited</p>
+                                    </div>
+                                </div>
+
+                                <!-- Committee 4 -->
+                                <div class="glass-card rounded-2xl p-4 text-center border border-apple-border/80 dark:border-apple-darkborder/80 hover:border-iatss/40 transition-all duration-300 group">
+                                    <div class="relative w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border border-iatss/40">
+                                        <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80" alt="Committee Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="text-[10px] font-semibold text-iatss uppercase tracking-wider mb-1">Committee</div>
+                                    <h4 class="text-sm font-bold text-apple-text dark:text-apple-darktext">Dr. Prasert Chai</h4>
+                                    <p class="text-[11px] text-apple-secondary dark:text-apple-darksecondary mb-2">Smart Infrastructure</p>
+                                    
+                                    <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-[11px] font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-2.5 py-1 rounded-full border border-apple-border/50 dark:border-apple-darkborder/50">
+                                        <span>Details</span>
+                                        <svg class="w-3 h-3 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    
+                                    <div class="details-content hidden mt-2 pt-2 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-[11px] space-y-1">
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Director of Innovation Lab</p>
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext mt-1">Workplace:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">KMUTT University</p>
+                                    </div>
+                                </div>
+
+                                <!-- Committee 5 -->
+                                <div class="glass-card rounded-2xl p-4 text-center border border-apple-border/80 dark:border-apple-darkborder/80 hover:border-iatss/40 transition-all duration-300 group">
+                                    <div class="relative w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden border border-iatss/40">
+                                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80" alt="Committee Portrait" class="protected-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="text-[10px] font-semibold text-iatss uppercase tracking-wider mb-1">Committee</div>
+                                    <h4 class="text-sm font-bold text-apple-text dark:text-apple-darktext">Ms. Nareerat Wong</h4>
+                                    <p class="text-[11px] text-apple-secondary dark:text-apple-darksecondary mb-2">Public Relations</p>
+                                    
+                                    <button onclick="toggleNodeDetails(this)" class="inline-flex items-center text-[11px] font-medium text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-colors gap-1 mx-auto bg-apple-subtle dark:bg-apple-darksubtle px-2.5 py-1 rounded-full border border-apple-border/50 dark:border-apple-darkborder/50">
+                                        <span>Details</span>
+                                        <svg class="w-3 h-3 transform transition-transform duration-200 icon-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    
+                                    <div class="details-content hidden mt-2 pt-2 border-t border-apple-border/50 dark:border-apple-darkborder/50 text-left text-[11px] space-y-1">
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext">Job Position:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Head of Communications</p>
+                                        <p class="font-bold text-apple-text dark:text-apple-darktext mt-1">Workplace:</p>
+                                        <p class="text-apple-secondary dark:text-apple-darksecondary">Digital Economy Promotion Agency (DEPA)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+        </section>
+    </main>
+    <div id="site-footer"></div>
+    <script src="assets/js/site-shell.js"></script>
+    <script src="assets/js/site.js"></script>
+</body>
+</html>

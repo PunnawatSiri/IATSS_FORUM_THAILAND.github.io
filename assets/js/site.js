@@ -1,74 +1,7 @@
-document.getElementById('year').textContent = new Date().getFullYear();
+const footerYear = document.getElementById('year');
+if (footerYear) footerYear.textContent = new Date().getFullYear();
 
-        // Project Database ordered CHRONOLOGICALLY (Most Recent to Oldest)
-        const projectDatabase = [
-            {
-                id: "proj-2024-1",
-                name: "Smart EV First-Mile Feeder Systems",
-                sghs: "Economy",
-                year: "2024",
-                dateLabel: "Jan 2024",
-                location: "Bangkok",
-                mapCoords: { x: 45, y: 52 },
-                detail: "Developing urban electric feeder networks connecting Bangkok suburban commuters with central mass transit lines to reduce carbon emissions.",
-                image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: "proj-2023-2",
-                name: "Zero-Waste Nan River Watershed Rehabilitation",
-                sghs: "Biosphere",
-                year: "2023",
-                dateLabel: "Nov 2023",
-                location: "Nan",
-                mapCoords: { x: 46, y: 16 },
-                detail: "Community-driven river reforestation, soil erosion prevention, and sustainable biodiversity monitoring in northern Thailand.",
-                image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: "proj-2023-1",
-                name: "Youth Helmet & Road Safety Action",
-                sghs: "Society",
-                year: "2023",
-                dateLabel: "May 2023",
-                location: "Chiang Mai",
-                mapCoords: { x: 34, y: 18 },
-                detail: "Empowering university student ambassadors to advocate for traffic safety regulations, helmet usage, and safer pedestrian zones.",
-                image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: "proj-2022-2",
-                name: "Eastern Seaboard Circular Industrial Grid",
-                sghs: "Economy",
-                year: "2022",
-                dateLabel: "Oct 2022",
-                location: "Rayong",
-                mapCoords: { x: 58, y: 57 },
-                detail: "Cross-sector industrial waste heat and polymer recycling exchange designed by alumni environmental engineers.",
-                image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: "proj-2022-1",
-                name: "Andaman Coastal Mangrove Eco-Restoration",
-                sghs: "Biosphere",
-                year: "2022",
-                dateLabel: "Mar 2022",
-                location: "Phuket",
-                mapCoords: { x: 28, y: 78 },
-                detail: "Marine coastal mangrove sanctuary rehabilitation and community eco-tourism guidelines empowering coastal fishermen.",
-                image: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: "proj-2021-1",
-                name: "Isan Agricultural Solar Microgrid",
-                sghs: "Society",
-                year: "2021",
-                dateLabel: "Aug 2021",
-                location: "Khon Kaen",
-                mapCoords: { x: 68, y: 34 },
-                detail: "Decentralized solar microgrid powering community water irrigation pumps and rural learning centers across Northeastern Thailand.",
-                image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80"
-            }
-        ];
+        const projectDatabase = window.projectDatabase || [];
 
         let currentSGHSFilter = 'all';
         let selectedProjectId = 'proj-2024-1';
@@ -80,7 +13,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
             const filtered = projectDatabase.filter(p => {
                 return (currentSGHSFilter === 'all') || (p.sghs === currentSGHSFilter);
-            });
+            }).sort((a, b) => b.sortDate - a.sortDate);
 
             if (filtered.length === 0) {
                 container.innerHTML = `
@@ -97,7 +30,10 @@ document.getElementById('year').textContent = new Date().getFullYear();
                 const isSelected = proj.id === selectedProjectId;
                 const card = document.createElement('div');
                 card.className = `glass-card p-4 rounded-2xl border ${isSelected ? 'border-2 border-iatss shadow-md bg-iatss-light/40 dark:bg-iatss/15' : 'border-apple-border dark:border-apple-darkborder hover:border-iatss/40'} cursor-pointer transition-all duration-300 flex flex-col sm:flex-row gap-4 items-center group relative`;
-                card.onclick = () => selectProject(proj.id);
+                card.onclick = event => {
+                    if (event.target.closest('a')) return;
+                    selectProject(proj.id);
+                };
 
                 const sghsBadgeColor = proj.sghs === 'Economy' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' :
                                        proj.sghs === 'Society' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300' :
@@ -117,7 +53,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
                                 ${proj.location}
                             </span>
                         </div>
-                        <h3 class="text-sm font-bold text-apple-text dark:text-apple-darktext group-hover:text-iatss transition-colors leading-snug">${proj.name}</h3>
+                        <h3 class="text-sm font-bold text-apple-text dark:text-apple-darktext group-hover:text-iatss transition-colors leading-snug"><a href="${proj.url}" class="hover:underline">${proj.name}</a></h3>
                         <p class="text-xs text-apple-secondary dark:text-apple-darksecondary line-clamp-2 leading-relaxed">${proj.detail}</p>
                     </div>
                 `;
@@ -381,13 +317,17 @@ document.getElementById('year').textContent = new Date().getFullYear();
             if (html.classList.contains('dark')) {
                 html.classList.remove('dark');
                 localStorage.setItem('iatss_theme', 'light');
-                sunIcon.classList.add('hidden');
-                moonIcon.classList.remove('hidden');
+                if (sunIcon && moonIcon) {
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                }
             } else {
                 html.classList.add('dark');
                 localStorage.setItem('iatss_theme', 'dark');
-                moonIcon.classList.add('hidden');
-                sunIcon.classList.remove('hidden');
+                if (sunIcon && moonIcon) {
+                    moonIcon.classList.add('hidden');
+                    sunIcon.classList.remove('hidden');
+                }
             }
         }
 
@@ -396,8 +336,12 @@ document.getElementById('year').textContent = new Date().getFullYear();
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
                 document.documentElement.classList.add('dark');
-                document.getElementById('theme-toggle-moon-icon').classList.add('hidden');
-                document.getElementById('theme-toggle-sun-icon').classList.remove('hidden');
+                const moonIcon = document.getElementById('theme-toggle-moon-icon');
+                const sunIcon = document.getElementById('theme-toggle-sun-icon');
+                if (moonIcon && sunIcon) {
+                    moonIcon.classList.add('hidden');
+                    sunIcon.classList.remove('hidden');
+                }
             }
         })();
 
@@ -426,56 +370,10 @@ document.getElementById('year').textContent = new Date().getFullYear();
             animateValue("counter-years", 0, 40, 1600);
         }
 
-        function switchTab(tabId) {
-            const panels = document.querySelectorAll('.tab-panel');
-            panels.forEach(panel => {
-                panel.classList.add('hidden');
-                panel.classList.remove('opacity-100');
-                panel.classList.add('opacity-0');
-            });
-
-            const selectedPanel = document.getElementById(`tab-content-${tabId}`);
-            if (selectedPanel) {
-                selectedPanel.classList.remove('hidden');
-                setTimeout(() => {
-                    selectedPanel.classList.remove('opacity-0');
-                    selectedPanel.classList.add('opacity-100');
-                }, 50);
-            }
-
-            const navButtons = document.querySelectorAll('.tab-btn');
-            navButtons.forEach(btn => {
-                btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-apple-text', 'dark:text-apple-darktext', 'shadow-sm');
-                btn.classList.add('text-apple-secondary', 'dark:text-apple-darksecondary');
-            });
-
-            const activeBtn = document.getElementById(`nav-${tabId}`);
-            if (activeBtn) {
-                activeBtn.classList.add('bg-white', 'dark:bg-slate-800', 'text-apple-text', 'dark:text-apple-darktext', 'shadow-sm');
-                activeBtn.classList.remove('text-apple-secondary', 'dark:text-apple-darksecondary');
-            }
-
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                toggleMobileMenu();
-            }
-
-            if (tabId === 'about') {
-                animated = false;
-                animateCounters();
-            }
-
-            if (tabId === 'alumni' && alumniNetwork) {
-                setTimeout(() => {
-                    alumniNetwork.redraw();
-                    alumniNetwork.fit();
-                }, 100);
-            }
-        }
-
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
+            document.getElementById('mobile-menu-btn').setAttribute('aria-expanded', String(!menu.classList.contains('hidden')));
         }
 
         function toggleNodeDetails(btn) {
@@ -492,7 +390,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(animateCounters, 200);
+            if (document.getElementById('counter-alumni')) setTimeout(animateCounters, 200);
             renderBentoGrid('program');
             renderProjectsList();
             renderMapPins();

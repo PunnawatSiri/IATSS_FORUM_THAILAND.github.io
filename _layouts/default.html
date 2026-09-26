@@ -1,0 +1,17 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+{% include head.html %}
+<body class="bg-apple-bg dark:bg-apple-darkbg text-apple-text dark:text-apple-darktext font-sans antialiased selection:bg-iatss selection:text-white flex flex-col min-h-screen transition-colors duration-300">
+    {% include header.html %}
+    {% include alumni-modal.html %}
+    <main class="flex-grow">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-20">
+            {{ content }}
+        </section>
+    </main>
+    {% include footer.html %}
+    <script src="{{ '/assets/js/site.js' | relative_url }}"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | IATSS Forum Thailand</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        iatss: { DEFAULT: "#006954", dark: "#004d3d", light: "#e6f0ed", hover: "#005443" },
+                        apple: { bg: "#ffffff", darkbg: "#0a0a0c", subtle: "#f5f5f7", darksubtle: "#161618", text: "#1d1d1f", darktext: "#f5f5f7", secondary: "#86868b", darksecondary: "#a1a1a6", border: "#e5e5e7", darkborder: "#2c2c2e" }
+                    },
+                    fontFamily: { sans: ["-apple-system", "BlinkMacSystemFont", "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", "sans-serif"] }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="assets/css/site.css">
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body data-page="project" class="bg-apple-bg dark:bg-apple-darkbg text-apple-text dark:text-apple-darktext font-sans antialiased selection:bg-iatss selection:text-white flex flex-col min-h-screen transition-colors duration-300">
+    <div id="site-header"></div>
+    <div id="alumni-modal"></div>
+    <main class="flex-grow">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-20">
+            <div class="max-w-7xl mx-auto space-y-8">
+                <div class="text-center space-y-2">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-iatss-light dark:bg-iatss/20 text-iatss text-xs font-semibold">
+                        <span>Sustainable Development Goals (SDGs)</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-apple-text dark:text-apple-darktext tracking-tight">Projects &amp; Field Implementations</h1>
+                    <p class="text-sm sm:text-base text-apple-secondary dark:text-apple-darksecondary max-w-2xl mx-auto">
+                        Browse completed Thai alumni initiatives categorized by SDG pillars (Economy, Society, Biosphere) in chronological order. Click any project to highlight its location on the Thailand map.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <div class="lg:col-span-7 space-y-5">
+                        <div class="glass-card p-3.5 rounded-2xl flex items-center justify-between gap-2 overflow-x-auto border border-apple-border dark:border-apple-darkborder">
+                            <span class="text-xs font-bold text-apple-secondary dark:text-apple-darksecondary pl-2 uppercase tracking-wider shrink-0">Filter by SDG:</span>
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                <button onclick="filterProjects('all')" id="sghs-filter-all" class="sghs-btn active-sghs px-3.5 py-1.5 text-xs font-bold rounded-full bg-iatss text-white shadow-sm transition-all duration-200">All</button>
+                                <button onclick="filterProjects('Economy')" id="sghs-filter-Economy" class="sghs-btn px-3.5 py-1.5 text-xs font-semibold rounded-full text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-all duration-200">Economy</button>
+                                <button onclick="filterProjects('Society')" id="sghs-filter-Society" class="sghs-btn px-3.5 py-1.5 text-xs font-semibold rounded-full text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-all duration-200">Society</button>
+                                <button onclick="filterProjects('Biosphere')" id="sghs-filter-Biosphere" class="sghs-btn px-3.5 py-1.5 text-xs font-semibold rounded-full text-apple-secondary dark:text-apple-darksecondary hover:text-iatss transition-all duration-200">Biosphere</button>
+                            </div>
+                        </div>
+                        <div id="projects-list-container" class="space-y-4 max-h-[640px] overflow-y-auto pr-1"></div>
+                    </div>
+                    <div class="lg:col-span-5 sticky top-28">
+                        <div class="glass-card rounded-3xl p-6 border border-apple-border dark:border-apple-darkborder apple-shadow relative overflow-hidden flex flex-col items-center">
+                            <div class="w-full flex items-center justify-between mb-3">
+                                <span class="text-xs font-bold uppercase tracking-wider text-iatss flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-iatss animate-ping"></span>
+                                    Thailand Project Map
+                                </span>
+                                <span id="active-map-location-name" class="text-xs font-semibold text-apple-secondary dark:text-apple-darksecondary">Select a project</span>
+                            </div>
+                            <div class="relative w-full max-w-[340px] h-[480px] bg-apple-subtle/60 dark:bg-apple-darksubtle/60 rounded-2xl p-4 flex items-center justify-center border border-apple-border/40 dark:border-apple-darkborder/40">
+                                <svg viewBox="0 0 300 500" class="w-full h-full drop-shadow-md text-slate-300 dark:text-slate-800" fill="currentColor" aria-label="Stylized map of Thailand">
+                                    <path d="M110 30 L160 20 L190 60 L180 120 L130 140 L90 100 Z" class="fill-current opacity-70 hover:opacity-90 transition-opacity" />
+                                    <path d="M180 120 L270 110 L280 200 L210 240 L160 190 Z" class="fill-current opacity-60 hover:opacity-90 transition-opacity" />
+                                    <path d="M130 140 L180 120 L160 190 L180 250 L120 250 L110 180 Z" class="fill-current opacity-80 hover:opacity-90 transition-opacity" />
+                                    <path d="M180 250 L230 240 L240 280 L180 290 Z" class="fill-current opacity-70 hover:opacity-90 transition-opacity" />
+                                    <path d="M120 250 L160 250 L150 330 L130 390 L140 460 L100 480 L90 410 L110 330 Z" class="fill-current opacity-75 hover:opacity-90 transition-opacity" />
+                                </svg>
+                                <div id="map-pins-layer" class="absolute inset-0 pointer-events-none"></div>
+                            </div>
+                            <div class="w-full mt-4 p-4 rounded-2xl bg-white dark:bg-slate-800 border border-iatss/30 shadow-md text-left transition-all duration-300">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] uppercase font-bold text-iatss tracking-wider">Active Location Spot</span>
+                                    <span id="map-info-year" class="text-[10px] font-bold px-2 py-0.5 rounded bg-iatss-light dark:bg-iatss/20 text-iatss">2024</span>
+                                </div>
+                                <h2 id="map-info-title" class="text-sm font-extrabold text-apple-text dark:text-apple-darktext mt-1">Click a project on the left</h2>
+                                <p id="map-info-desc" class="text-xs text-apple-secondary dark:text-apple-darksecondary mt-1 leading-snug">The map marker will blink at the project site in Thailand.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div id="site-footer"></div>
+    <script src="assets/js/site-shell.js"></script>
+    <script src="assets/js/project-data.js"></script>
+    <script src="assets/js/site.js"></script>
+</body>
+</html>

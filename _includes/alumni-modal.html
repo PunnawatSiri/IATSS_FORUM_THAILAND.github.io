@@ -1,0 +1,18 @@
+<!-- ALUMNI NODE DETAIL MODAL -->
+    <div id="detailModal" class="fixed inset-0 bg-black/30 dark:bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 z-[60]">
+        <div class="glass-card rounded-3xl p-6 max-w-sm w-full apple-shadow-lg relative">
+            <button onclick="closeAlumniModal()" class="absolute top-4 right-4 text-apple-secondary dark:text-apple-darksecondary hover:text-iatss text-lg font-bold" aria-label="Close alumni details">×</button>
+            <div class="flex flex-col items-center text-center">
+                <img id="modalImg" src="" alt="Alumni avatar" class="w-20 h-20 rounded-full bg-apple-subtle dark:bg-apple-darksubtle border-2 border-iatss mb-3 p-1">
+                <span id="modalRow" class="text-[10px] font-bold uppercase tracking-wider text-iatss bg-iatss-light dark:bg-iatss/20 px-2.5 py-1 rounded-full border border-iatss/20 mb-2">Row #</span>
+                <h2 id="modalName" class="text-lg font-bold text-apple-text dark:text-apple-darktext">Name</h2>
+                <p id="modalNickname" class="text-xs text-apple-secondary dark:text-apple-darksecondary mb-4">Nickname</p>
+                <div class="w-full bg-apple-subtle dark:bg-apple-darksubtle rounded-2xl p-4 border border-apple-border/60 dark:border-apple-darkborder/60 text-left text-xs space-y-3">
+                    <div><span class="text-[10px] text-apple-secondary dark:text-apple-darksecondary font-medium block">Batch Number</span><span id="modalBatch" class="font-semibold text-iatss">Batch -</span></div>
+                    <div><span class="text-[10px] text-apple-secondary dark:text-apple-darksecondary font-medium block">Current Work Position</span><span id="modalPosition" class="font-semibold text-apple-text dark:text-apple-darktext">Position</span></div>
+                    <div><span class="text-[10px] text-apple-secondary dark:text-apple-darksecondary font-medium block">Place of Work</span><span id="modalPlace" class="font-semibold text-apple-text dark:text-apple-darktext">Place</span></div>
+                </div>
+                <button onclick="closeAlumniModal()" class="mt-4 w-full bg-iatss hover:bg-iatss-hover text-white text-xs font-bold py-2.5 rounded-full transition">Close</button>
+            </div>
+        </div>
+    </div>

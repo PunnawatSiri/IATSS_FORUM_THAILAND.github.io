@@ -1,0 +1,44 @@
+<header class="sticky top-0 z-50 glass-nav border-b border-apple-border/60 dark:border-apple-darkborder/60 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <a href="https://www.iatssforum.jp/en/" target="_blank" rel="noopener noreferrer" class="group flex items-center" aria-label="IATSS Forum main website">
+                    <img src="/assets/images/logos/IATSS_logo.png" alt="IATSS Forum" class="h-8 w-auto object-contain transition-transform group-hover:scale-105">
+                </a>
+                <div class="h-8 w-px bg-apple-border dark:bg-apple-darkborder"></div>
+                <a href="/index.html" class="group flex items-center space-x-2">
+                    <img src="/assets/images/logos/TIFA_logo.png" alt="IATSS Forum Thailand" class="w-10 h-10 rounded-xl object-contain transition-transform group-hover:scale-105">
+                    <span class="hidden sm:block text-left">
+                        <span class="block text-[10px] font-semibold uppercase tracking-wider text-iatss">Alumni Association</span>
+                        <span class="block text-xs font-bold text-apple-text dark:text-apple-darktext tracking-tight group-hover:text-iatss transition-colors">IATSS Thailand</span>
+                    </span>
+                </a>
+            </div>
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-1.5 bg-apple-subtle dark:bg-apple-darksubtle p-1.5 rounded-full border border-apple-border/50 dark:border-apple-darkborder/50" aria-label="Main navigation">
+                <a data-nav-id="about" href="/index.html" class="px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext">About</a>
+                <a data-nav-id="project" href="/project.html" class="px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext">Project</a>
+                <a data-nav-id="people" href="/people.html" class="px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext">People</a>
+                <a data-nav-id="alumni" href="/alumni.html" class="px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext">Alumni</a>
+                <a data-nav-id="faq" href="/faq.html" class="px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext">FAQ</a>
+                <a data-nav-id="contact" href="/contact.html" class="px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 text-apple-secondary dark:text-apple-darksecondary hover:text-apple-text dark:hover:text-apple-darktext">Contact</a>
+            </nav>
+            <div class="flex items-center space-x-3">
+                <button id="theme-toggle" onclick="toggleTheme()" class="p-2.5 rounded-full bg-apple-subtle dark:bg-apple-darksubtle border border-apple-border/60 dark:border-apple-darkborder/60 text-apple-text dark:text-apple-darktext hover:scale-105 active:scale-95 transition-all duration-200" aria-label="Toggle dark mode">
+                    <svg id="theme-toggle-sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <svg id="theme-toggle-moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </button>
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-xl text-apple-text dark:text-apple-darktext hover:bg-apple-subtle dark:hover:bg-apple-darksubtle transition-colors" aria-label="Toggle navigation menu" aria-controls="mobile-menu" aria-expanded="false">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+        </div>
+        <nav id="mobile-menu" class="hidden md:hidden py-4 border-t border-apple-border dark:border-apple-darkborder space-y-2" aria-label="Mobile navigation">
+            <a data-nav-id="about" href="/index.html" class="block px-4 py-2.5 text-base font-medium rounded-xl hover:bg-apple-subtle dark:hover:bg-apple-darksubtle text-apple-text dark:text-apple-darktext">About</a>
+            <a data-nav-id="project" href="/project.html" class="block px-4 py-2.5 text-base font-medium rounded-xl hover:bg-apple-subtle dark:hover:bg-apple-darksubtle text-apple-text dark:text-apple-darktext">Project</a>
+            <a data-nav-id="people" href="/people.html" class="block px-4 py-2.5 text-base font-medium rounded-xl hover:bg-apple-subtle dark:hover:bg-apple-darksubtle text-apple-text dark:text-apple-darktext">People</a>
+            <a data-nav-id="alumni" href="/alumni.html" class="block px-4 py-2.5 text-base font-medium rounded-xl hover:bg-apple-subtle dark:hover:bg-apple-darksubtle text-apple-text dark:text-apple-darktext">Alumni</a>
+            <a data-nav-id="faq" href="/faq.html" class="block px-4 py-2.5 text-base font-medium rounded-xl hover:bg-apple-subtle dark:hover:bg-apple-darksubtle text-apple-text dark:text-apple-darktext">FAQ</a>
+            <a data-nav-id="contact" href="/contact.html" class="block px-4 py-2.5 text-base font-medium rounded-xl hover:bg-apple-subtle dark:hover:bg-apple-darksubtle text-apple-text dark:text-apple-darktext">Contact</a>
+        </nav>
+    </div>
+</header>

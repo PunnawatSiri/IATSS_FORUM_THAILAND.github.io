@@ -1,0 +1,87 @@
+const projectSiteRoot = new URL("../../", document.currentScript.src);
+window.projectDatabase = [
+    {
+        id: "proj-2024-1",
+        name: "Smart EV First-Mile Feeder Systems",
+        sghs: "Economy",
+        year: 2024,
+        sortDate: 202401,
+        dateLabel: "Jan 2024",
+        location: "Bangkok",
+        mapCoords: { x: 45, y: 52 },
+        detail: "Developing urban electric feeder networks connecting Bangkok suburban commuters with central mass transit lines to reduce carbon emissions.",
+        image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80",
+        url: new URL("projects/smart-ev-first-mile-feeder-systems.html", projectSiteRoot).pathname,
+        description: "This initiative develops electric feeder connections between suburban neighborhoods and Bangkok's central mass transit network. Its focus is practical, lower-emission first-mile travel that makes public transport easier to reach."
+    },
+    {
+        id: "proj-2022-1",
+        name: "Andaman Coastal Mangrove Eco-Restoration",
+        sghs: "Biosphere",
+        year: 2022,
+        sortDate: 202203,
+        dateLabel: "Mar 2022",
+        location: "Phuket",
+        mapCoords: { x: 28, y: 78 },
+        detail: "Marine coastal mangrove sanctuary rehabilitation and community eco-tourism guidelines empowering coastal fishermen.",
+        image: "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80",
+        url: new URL("projects/andaman-coastal-mangrove-eco-restoration.html", projectSiteRoot).pathname,
+        description: "This project supports restoration of a coastal mangrove sanctuary and develops community eco-tourism guidance with coastal fishing communities in Phuket."
+    },
+    {
+        id: "proj-2022-2",
+        name: "Eastern Seaboard Circular Industrial Grid",
+        sghs: "Economy",
+        year: 2022,
+        sortDate: 202210,
+        dateLabel: "Oct 2022",
+        location: "Rayong",
+        mapCoords: { x: 58, y: 57 },
+        detail: "Cross-sector industrial waste heat and polymer recycling exchange designed by alumni environmental engineers.",
+        image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80",
+        url: new URL("projects/eastern-seaboard-circular-industrial-grid.html", projectSiteRoot).pathname,
+        description: "Alumni environmental engineers designed a cross-sector exchange for industrial waste heat and polymer recycling on the Eastern Seaboard. The project explores how resources from one industrial process can support another."
+    },
+    {
+        id: "proj-2023-1",
+        name: "Youth Helmet & Road Safety Action",
+        sghs: "Society",
+        year: 2023,
+        sortDate: 202305,
+        dateLabel: "May 2023",
+        location: "Chiang Mai",
+        mapCoords: { x: 34, y: 18 },
+        detail: "Empowering university student ambassadors to advocate for traffic safety regulations, helmet usage, and safer pedestrian zones.",
+        image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+        url: new URL("projects/youth-helmet-road-safety-action.html", projectSiteRoot).pathname,
+        description: "University student ambassadors lead awareness and advocacy on safer travel in Chiang Mai. The initiative promotes helmet use, traffic-safety rules, and safer spaces for people walking."
+    },
+    {
+        id: "proj-2023-2",
+        name: "Zero-Waste Nan River Watershed Rehabilitation",
+        sghs: "Biosphere",
+        year: 2023,
+        sortDate: 202311,
+        dateLabel: "Nov 2023",
+        location: "Nan",
+        mapCoords: { x: 46, y: 16 },
+        detail: "Community-driven river reforestation, soil erosion prevention, and sustainable biodiversity monitoring in northern Thailand.",
+        image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=80",
+        url: new URL("projects/zero-waste-nan-river-watershed-rehabilitation.html", projectSiteRoot).pathname,
+        description: "The project brings local communities into watershed restoration along the Nan River. Its activities connect riverbank reforestation, erosion prevention, and ongoing observation of local biodiversity."
+    },
+    {
+        id: "proj-2021-1",
+        name: "Isan Agricultural Solar Microgrid",
+        sghs: "Society",
+        year: 2021,
+        sortDate: 202108,
+        dateLabel: "Aug 2021",
+        location: "Khon Kaen",
+        mapCoords: { x: 68, y: 34 },
+        detail: "Decentralized solar microgrid powering community water irrigation pumps and rural learning centers across Northeastern Thailand.",
+        image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80",
+        url: new URL("projects/isan-agricultural-solar-microgrid.html", projectSiteRoot).pathname,
+        description: "A decentralized solar microgrid provides electricity for community irrigation pumps and rural learning centers in Khon Kaen and the wider Northeast, helping local services rely on renewable power."
+    }
+];

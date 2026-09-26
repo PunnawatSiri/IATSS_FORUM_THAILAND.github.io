@@ -1,0 +1,19 @@
+---
+layout: default
+---
+<article class="max-w-4xl mx-auto space-y-8">
+    <a href="{{ '/project.html' | relative_url }}" class="inline-flex items-center gap-2 text-sm font-semibold text-iatss hover:underline">&larr; Back to all projects</a>
+    <header class="space-y-4">
+        <div class="flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-wider">
+            <span class="px-3 py-1 rounded-full bg-iatss-light dark:bg-iatss/20 text-iatss">{{ page.sghs }}</span>
+            <span class="px-3 py-1 rounded-full bg-apple-subtle dark:bg-apple-darksubtle text-apple-secondary dark:text-apple-darksecondary">{{ page.date_label }}</span>
+            <span class="px-3 py-1 rounded-full bg-apple-subtle dark:bg-apple-darksubtle text-apple-secondary dark:text-apple-darksecondary">{{ page.location }}</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">{{ page.title }}</h1>
+        <p class="text-lg leading-relaxed text-apple-secondary dark:text-apple-darksecondary">{{ page.detail }}</p>
+    </header>
+    <img src="{{ page.image }}" alt="{{ page.title | escape }}" class="protected-img w-full max-h-[28rem] object-cover rounded-3xl apple-shadow-lg">
+    <div class="glass-card rounded-3xl p-6 sm:p-10 space-y-5 leading-relaxed text-apple-secondary dark:text-apple-darksecondary">
+        {{ content }}
+    </div>
+</article>
