@@ -17,9 +17,9 @@ async function loadShellPart(path, targetId) {
 }
 
 Promise.all([
-    loadShellPart("_includes/header.html", "site-header"),
-    loadShellPart("_includes/alumni-modal.html", "alumni-modal"),
-    loadShellPart("_includes/footer.html", "site-footer")
+    loadShellPart("partials/header.html", "site-header"),
+    loadShellPart("partials/alumni-modal.html", "alumni-modal"),
+    loadShellPart("partials/footer.html", "site-footer")
 ]).then(() => {
     const activePage = document.body.dataset.page;
     document.querySelectorAll("[data-nav-id]").forEach(link => {
