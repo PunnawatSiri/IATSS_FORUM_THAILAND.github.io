@@ -331,20 +331,6 @@ if (footerYear) footerYear.textContent = new Date().getFullYear();
             }
         }
 
-        (function initTheme() {
-            const savedTheme = localStorage.getItem('iatss_theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-                document.documentElement.classList.add('dark');
-                const moonIcon = document.getElementById('theme-toggle-moon-icon');
-                const sunIcon = document.getElementById('theme-toggle-sun-icon');
-                if (moonIcon && sunIcon) {
-                    moonIcon.classList.add('hidden');
-                    sunIcon.classList.remove('hidden');
-                }
-            }
-        })();
-
         let animated = false;
         function animateCounters() {
             if (animated) return;

@@ -20,6 +20,60 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
+        .page-popup {
+            width: min(34rem, calc(100vw - 2rem));
+            max-width: none;
+            max-height: calc(100vh - 2rem);
+            padding: 0;
+            overflow: auto;
+            color: #1d1d1f;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 1.5rem;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+        }
+        .dark .page-popup {
+            color: #f5f5f7;
+            background: #161618;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .page-popup::backdrop {
+            background: rgba(0, 0, 0, 0.58);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .page-popup__image {
+            display: block;
+            width: 100%;
+            max-height: 18rem;
+            object-fit: cover;
+        }
+        .page-popup__image[hidden] {
+            display: none;
+        }
+        .page-popup__close {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            display: grid;
+            width: 2.5rem;
+            height: 2.5rem;
+            place-items: center;
+            color: #1d1d1f;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 9999px;
+            cursor: pointer;
+        }
+        .dark .page-popup__close {
+            color: #f5f5f7;
+            background: rgba(22, 22, 24, 0.92);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+        .page-popup__close:hover {
+            color: #006954;
+        }
+
         .apple-shadow {
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
         }
